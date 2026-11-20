@@ -15,10 +15,13 @@
 
 ## 结构
 
-- `client.js` 是浏览器半：手写的 module-loader 产物，不经构建。
-  改之前先读它顶部的机制说明。
-- `index.js` 是 Host 半，保持无副作用，只用于让 bundle 行被加载。
+- `src/client/index.ts` 是浏览器半的源码，`client.js` 由 `node scripts/build.mjs` 生成并入库。
+  改之前先读源码顶部的机制说明；产物不手改，`npm run check` 里的 `--check` 保证它与源码同步。
+- `src/host/index.ts` 是 Host 半，保持无副作用，只用于让 bundle 行被加载。
+- `tsconfig.json`、`scripts/build.mjs`、`scripts/sync-types.mjs` 是 TypeScript 基座，
+  模板来自工作区 `tools/dsh-plugin-ts/`；类型只以 `import type` 出现，产物里没有 `@deepseek-ai/*` 运行时依赖。
 - `test/client.test.mjs` 用假的 `ctx`、控制器、store 与页面固定默认全屏的判定、页面焦点落点与卸载还原。
+  测试加载的是构建后的 `client.js`，源码迁移不改变它们。
 - `locale/*.json` 存放 Plugin Manager 的本地化元数据。
 
 ## 实现
@@ -48,7 +51,9 @@
 
 主版本升级由用户决定，常规迭代沿用当前主版本。
 
-- 在项目根运行 `node --test` 和 `node --check client.js && node --check index.js`。
+- 在项目根运行 `npm run check`：`node --test`、`tsc -p tsconfig.json`、
+  `node scripts/build.mjs --check` 与 `node scripts/sync-types.mjs --check` 依次检查行为、类型、产物新鲜度与类型包版本。
+- DSH 升级后先 `node scripts/sync-types.mjs` 重新钉住类型包版本，再跑 `npm run check`。
 - 在默认工作区根运行 `node tools/new-dsh-plugin/cli.mjs --check plugins/dsh-sidebar-fullscreen`。
 - 安装、卸载及实机验证使用一次性 profile。
   报告区分夹具测试和实机观察。
