@@ -1,6 +1,6 @@
 {
   "meta": {
-    "title": "Barra lateral em tela cheia",
-    "description": "Abre a barra lateral direita em tela cheia por padrão: um arquivo, um terminal ou o navegador cobrem todo o espaço de trabalho em vez de dividi-lo com a conversa. Enquanto o painel está aberto, seu controle de tela cheia alterna para a exibição lado a lado até você fechá-lo; a próxima abertura volta a ser em tela cheia. Desativar o complemento não altera os layouts já salvos em tela cheia."
+    "title": "Foco na barra lateral",
+    "description": "Abre a barra lateral direita em tela cheia por padrão e move o foco do teclado para a página ativa. Use o controle de tela cheia para voltar à visualização lado a lado até fechar a barra lateral. Na próxima abertura, ela volta à tela cheia. Desativar o complemento preserva os layouts já salvos em tela cheia."
   }
 }

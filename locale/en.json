@@ -1,6 +1,6 @@
 {
   "meta": {
-    "title": "Sidebar opens fullscreen",
-    "description": "Opens the right Sidebar fullscreen by default: a file, terminal or browser covers the whole workspace instead of splitting it with the conversation. While the panel is open, its fullscreen control switches to split view until you close it; the next open is fullscreen again. Disabling the plugin leaves layouts already saved as fullscreen."
+    "title": "Sidebar Focus",
+    "description": "Opens the right sidebar fullscreen by default and moves keyboard focus into the active page. Use the fullscreen control to switch to split view until you close the sidebar. It opens fullscreen again the next time. Disabling the plugin preserves layouts already saved as fullscreen."
   }
 }

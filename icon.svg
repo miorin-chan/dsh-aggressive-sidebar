@@ -1,15 +1,14 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="36" height="36" viewBox="0 0 36 36" fill="none">
-  <rect x="19.5" y="6.5" width="8" height="23" rx="3.4" fill="url(#sidebar-fullscreen-panel)"/>
-  <g stroke="#7FB2F7" stroke-opacity="0.85" stroke-width="2" stroke-linecap="round">
-    <path d="M5 11.5V8.8A3.8 3.8 0 0 1 8.8 5H11.5"/>
-    <path d="M24.5 5H27.2A3.8 3.8 0 0 1 31 8.8V11.5"/>
-    <path d="M5 24.5V27.2A3.8 3.8 0 0 0 8.8 31H11.5"/>
-    <path d="M24.5 31H27.2A3.8 3.8 0 0 0 31 27.2V24.5"/>
-  </g>
+  <path d="M15 9H24.5A3.5 3.5 0 0 1 28 12.5V23.5A3.5 3.5 0 0 1 24.5 27H15Z"
+        fill="url(#sidebar-focus-panel)"/>
+  <path d="M15 9H11.5A3.5 3.5 0 0 0 8 12.5V23.5A3.5 3.5 0 0 0 11.5 27H15"
+        stroke="#7590C8" stroke-width="1.75" stroke-linecap="round"/>
+  <path d="M20.5 14.5H18.5V16.5M23 14.5H25V16.5M18.5 19.5V21.5H20.5M25 19.5V21.5H23"
+        stroke="#FFFFFF" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
   <defs>
-    <linearGradient id="sidebar-fullscreen-panel" x1="23.5" y1="6.5" x2="23.5" y2="29.5" gradientUnits="userSpaceOnUse">
-      <stop stop-color="#7AC2FF"/>
-      <stop offset="1" stop-color="#4A65E8"/>
+    <linearGradient id="sidebar-focus-panel" x1="17" y1="9" x2="26" y2="27" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#4B84D5"/>
+      <stop offset="1" stop-color="#4F5BC8"/>
     </linearGradient>
   </defs>
 </svg>

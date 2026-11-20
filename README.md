@@ -1,6 +1,6 @@
-# dsh-sidebar-fullscreen
+# Sidebar Focus
 
-Makes DeepSeek Harness's right Sidebar open fullscreen by default.
+Opens the DeepSeek Harness right sidebar fullscreen by default and moves keyboard focus into the active page.
 
 DSH's right Sidebar has two presentations.
 **Split** (`push`) gives the panel a column and pushes the conversation aside;
@@ -27,7 +27,7 @@ This plugin records fullscreen as the default, so every open lands fullscreen.
 
 Install this directory as a local bundle: **Plugins** > **Add plugin**,
 or let the agent run `install_bundle` on this directory.
-The plugin appears in **Plugins** as **Sidebar opens fullscreen** / **侧栏默认全屏**.
+The plugin appears in **Plugins** as **Sidebar Focus** / **侧栏聚焦**.
 
 ## Use
 

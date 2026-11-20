@@ -1,6 +1,6 @@
-# dsh-sidebar-fullscreen
+# 侧栏聚焦
 
-让 DeepSeek Harness 的右侧栏默认以全屏打开。
+让 DeepSeek Harness 的右侧栏默认全屏打开，并将键盘焦点移到当前页面的内容。
 
 DSH 右侧栏有两种呈现形态：**分屏**（`push`，面板占一列，会话让出空间）与**全屏**（覆盖整个工作区，底层宽屏列宽保留）。
 新面板一律以分屏开始，因此打开文件、终端或浏览器时，会话总是让出半个窗口。
@@ -23,7 +23,7 @@ DSH 右侧栏有两种呈现形态：**分屏**（`push`，面板占一列，会
 ## 安装
 
 把这个目录作为本地 bundle 安装：**Plugins** > **Add plugin**，或由助手执行 `install_bundle`。
-安装后 **Plugins** 中显示为 **Sidebar opens fullscreen** / **侧栏默认全屏**。
+安装后 **Plugins** 中显示为 **Sidebar Focus** / **侧栏聚焦**。
 
 ## 使用
 

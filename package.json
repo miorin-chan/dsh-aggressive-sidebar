@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "license": "MIT",
-  "description": "Opens the right Sidebar fullscreen by default; the panel's own fullscreen control still switches back.",
+  "description": "Opens the right sidebar fullscreen by default and moves keyboard focus into the active page.",
   "type": "module",
   "keywords": [
     "deepseek-harness",
