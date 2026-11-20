@@ -1,0 +1,6 @@
+{
+  "meta": {
+    "title": "Seitenleiste im Vollbild",
+    "description": "Öffnet die rechte Seitenleiste standardmäßig im Vollbild: Eine Datei, ein Terminal oder ein Browser deckt den gesamten Arbeitsbereich ab, statt ihn mit der Unterhaltung zu teilen. Solange das Panel offen ist, schaltet seine Vollbild-Schaltfläche bis zum Schließen auf die geteilte Ansicht um; das nächste Öffnen ist wieder Vollbild. Das Deaktivieren des Plugins ändert bereits als Vollbild gespeicherte Layouts nicht."
+  }
+}

@@ -1,0 +1,6 @@
+{
+  "meta": {
+    "title": "Barra lateral en pantalla completa",
+    "description": "Abre la barra lateral derecha en pantalla completa de forma predeterminada: un archivo, una terminal o el navegador cubren todo el espacio de trabajo en lugar de dividirlo con la conversación. Mientras el panel está abierto, su control de pantalla completa cambia a la vista dividida hasta que lo cierre; la siguiente apertura vuelve a ser en pantalla completa. Desactivar el complemento no modifica los diseños ya guardados en pantalla completa."
+  }
+}

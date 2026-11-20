@@ -1,0 +1,6 @@
+{
+  "meta": {
+    "title": "Barre latérale en plein écran",
+    "description": "Ouvre la barre latérale droite en plein écran par défaut : un fichier, un terminal ou le navigateur couvrent tout l’espace de travail au lieu de le partager avec la conversation. Tant que le panneau est ouvert, sa commande plein écran bascule en vue côte à côte jusqu’à sa fermeture ; l’ouverture suivante repasse en plein écran. Désactiver le plugin ne modifie pas les dispositions déjà enregistrées en plein écran."
+  }
+}

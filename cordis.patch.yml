@@ -1,0 +1,6 @@
+# Activates the bundle. The Host half is inert; the Client half ships through
+# package.json `dsh.client` and pins the right Sidebar's presentation while the
+# column is collapsed.
+- insert:
+    - id: dsh-sidebar-fullscreen
+      name: 'dsh-sidebar-fullscreen'
