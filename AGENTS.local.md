@@ -17,12 +17,15 @@
 
 ## 结构
 
+`npm run build:tools` 从 `scripts/` 下的 `.mts` 生成同路径 `.mjs`，Git 跟踪 TypeScript 源码。
+Node.js 22.18 或更新版本直接运行 `.test.mts`。
+
 - `src/client/index.ts` 是浏览器半的源码，`node scripts/build.mjs` 生成的 `client.js` 由 Git 忽略。
   改之前先读源码顶部的机制说明。产物不手改，`npm run check` 里的 `--check` 核对产物与源码是否一致。
 - `src/host/index.ts` 是 Host 半，保持无副作用，只用于让 bundle 行被加载。
-- `tsconfig.json`、`scripts/build.mjs`、`scripts/sync-types.mjs` 是 TypeScript 基座，
+- `tsconfig.json`、`scripts/build.mts`、`scripts/sync-types.mts` 是 TypeScript 基座，
   模板来自工作区 `tools/dsh-plugin-ts/`；类型只以 `import type` 出现，产物里没有 `@deepseek-ai/*` 运行时依赖。
-- `test/client.test.mjs` 用假的 `ctx`、控制器、store 与页面固定默认全屏的判定、页面焦点落点与卸载还原。
+- `test/client.test.mts` 用假的 `ctx`、控制器、store 与页面固定默认全屏的判定、页面焦点落点与卸载还原。
   测试加载的是构建后的 `client.js`，源码迁移不改变它们。
 - `locale/*.json` 存放 Plugin Manager 的本地化元数据。
 
