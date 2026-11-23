@@ -12,7 +12,7 @@ globalThis.window = {
 }
 await import('../client.js')
 
-assert.equal(registration.id, 'dsh-sidebar-fullscreen')
+assert.equal(registration.id, '@miorin/dsh-sidebar-fullscreen')
 const plugin = registration.factory()
 
 /** Let queued microtasks run. */

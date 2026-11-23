@@ -3,4 +3,4 @@
 # column is collapsed.
 - insert:
     - id: dsh-sidebar-fullscreen
-      name: 'dsh-sidebar-fullscreen'
+      name: '@miorin/dsh-sidebar-fullscreen'
