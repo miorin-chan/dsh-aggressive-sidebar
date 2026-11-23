@@ -104,11 +104,18 @@ function ModeSetting({ useSidebarSettings, saveMode, t }: ModeSettingProps) {
 
 // AppFrame.tsx and AppFrame.module.css (dsh-client-ui-layout 0.2.2-rc.5).
 // Let the panels use the positioned grid instead of the right track as their
-// containing block. Both keep the same right edge and the first row's height.
+// containing block. The grid also accounts for Windows' sidebar clearance,
+// so the fullscreen panel needs no separate width cap.
 const FRAME = ':has(> [data-rightbar-col]):has(> * > [data-slot="sidebar"]):not([data-sidebar-drawer])'
 const COLUMN = '> [data-rightbar-col]'
 const PANEL = `${COLUMN} [data-sidebar-right-panel='fullscreen']`
 const OPEN_FRAME = `${FRAME}:has(${COLUMN} [data-sidebar-right-session]:not([hidden]) [data-sidebar-right-panel='fullscreen'][data-sidebar-right-open])`
+// The native fullscreen layout suppresses easing. The sidebar remains visible
+// here, so let the frame's own animation move the shared edge.
+const ANIMATING_FRAME = `${OPEN_FRAME}[data-rightbar-fullscreen][data-animating]:not([data-dragging], [data-rightbar-instant])`
+const FRAME_TIMING = 'var(--ds-transition-duration-slow) var(--ds-ease-in-out)'
+const MACOS = "html[data-platform='darwin']"
+const FIRST_DOCK = "[data-dockkit-host='dock'][data-dockkit-column='0']"
 const WIDE_CSS = `
   @media (min-width: 768px) {
     ${FRAME} ${COLUMN} { position: static; }
@@ -117,12 +124,25 @@ const WIDE_CSS = `
       grid-column: 2 / -1;
       left: 0;
       width: auto !important;
+      max-width: none;
     }
     ${OPEN_FRAME} > :has(> * > [data-slot='main']) { interactivity: inert; }
-    ${OPEN_FRAME} > [data-side='sidebar'],
-    html[data-platform='darwin'] ${OPEN_FRAME}[data-sidebar-collapsed] > [data-shell-leading] { z-index: 41; }
-    html[data-platform='darwin'] ${FRAME} ${PANEL} [data-dockkit-host='dock'][data-dockkit-column='0'] {
+    ${OPEN_FRAME} > [data-side='sidebar'] {
+      grid-column: 2 / -1;
+      left: 0 !important;
+      z-index: 41;
+    }
+    ${MACOS} ${OPEN_FRAME}[data-sidebar-collapsed] > [data-shell-leading] { z-index: 41; }
+    ${MACOS} ${FRAME} ${PANEL} ${FIRST_DOCK} {
       --dsh-dockkit-strip-inline-start: var(--dsh-frame-leading-clearance, 10px);
+    }
+    @media (prefers-reduced-motion: no-preference) {
+      ${ANIMATING_FRAME} { transition: grid-template-columns ${FRAME_TIMING}; }
+      /* AppFrame starts drags from the target track width. */
+      ${ANIMATING_FRAME} > [data-side='sidebar'] { pointer-events: none; }
+      ${MACOS} ${ANIMATING_FRAME} ${PANEL} ${FIRST_DOCK} [data-dockkit-strip] {
+        transition: padding-inline-start ${FRAME_TIMING};
+      }
     }
   }
 `
