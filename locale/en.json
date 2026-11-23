@@ -1,6 +1,7 @@
 {
   "meta": {
-    "title": "Sidebar Focus",
-    "description": "Opens the right sidebar fullscreen by default and moves keyboard focus into the active page. Use the fullscreen control to switch to split view until you close the sidebar. It opens fullscreen again the next time. Disabling the plugin preserves layouts already saved as fullscreen."
+    "title": "Larger sidebar",
+    "description": "The right sidebar opens fullscreen by default. In wide windows, choose “Expand to the left sidebar” to cover the conversation and keep the left sidebar usable.",
+    "detail": "docs/DETAIL.md"
   }
 }

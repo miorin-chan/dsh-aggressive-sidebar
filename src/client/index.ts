@@ -7,12 +7,10 @@
  * columns stay underneath. Every fresh surface records `push`; the user switches
  * with the panel's fullscreen control or `pane.fullscreen.toggle`.
  *
- * This module makes `fullscreen` the recorded default, so every open lands
- * fullscreen. It never touches a panel that is already open: the mode is pinned
- * while the column is collapsed, and the user's own choice while it is open
- * stands until they close it. Because the mode is already recorded when the open
- * commits, the panel renders fullscreen from the first frame — there is no
- * correction after the open.
+ * Both of the plugin's opening modes use the native `fullscreen` presentation.
+ * The plugin settings can narrow that presentation to the left sidebar's edge.
+ * The store pins the native mode while collapsed. A manual switch to split view
+ * holds until the panel closes.
  *
  * Harness exposes navigation on `ctx.sidebarRight` (open, close, split, float)
  * but no presentation setter, and the per-session surface store belongs to the
@@ -54,6 +52,8 @@
 import type { Context } from '@deepseek-ai/cordis'
 import type { SidebarRightState, SurfaceActions } from '@deepseek-ai/dsh-client-ui-sidebar-right/client'
 import type { SessionId } from '@deepseek-ai/dsh-session/types'
+import { ENTRY_ID as NS } from '../lib/opening-mode.js'
+import { registerModeSettings } from './mode-settings.js'
 
 /** One session's adopted surface store, as the slot runtime mints it. Internal shape, not public API. */
 interface AdoptedStore {
@@ -77,7 +77,6 @@ interface SidebarRuntime {
 }
 
 
-const NS = 'dsh-sidebar-fullscreen'
 const FULLSCREEN = 'fullscreen'
 /** How long an opening may take to produce a focusable page. */
 const FOCUS_WINDOW_MS = 800
@@ -98,11 +97,10 @@ function surfaceOf(store: AdoptedStore, sessionId: SessionId) {
 /** Services this module needs before `apply` runs. */
 export const inject = ['sidebarRight']
 
-/**
- * Pin `fullscreen` on every session surface and move keyboard focus into the
- * page that opens. Registration and cleanup stay inside `ctx.effect`.
- */
+/** Prepare the native presentation, move focus on open, and register the mode preference. */
 export function apply(ctx: Context): void {
+ctx.inject(['slots', 'locale', 'configForms'], registerModeSettings)
+
 const warned = new Set<string>()
 const warnOnce = (key: string, message: string): void => {
   if (warned.has(key)) return

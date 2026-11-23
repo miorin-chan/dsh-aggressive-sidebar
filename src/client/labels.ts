@@ -1,0 +1,88 @@
+export const LOCALES = ['en', 'zh', 'ja', 'de', 'es', 'fr', 'pt', 'ru'] as const
+
+const en = {
+  mode: 'Opening mode',
+  fullscreen: 'Fullscreen',
+  leftSidebar: 'Expand to the left sidebar',
+  loading: 'Loading settings…',
+  saving: 'Saving…',
+  unavailable: 'Settings are unavailable.',
+  readOnly: 'This setting is read-only.',
+  saveFailed: 'Couldn’t save the setting.',
+}
+
+export const LABELS = {
+  en,
+  zh: {
+    mode: '展开模式',
+    fullscreen: '全屏',
+    leftSidebar: '展开到左边栏',
+    loading: '正在加载设置…',
+    saving: '正在保存…',
+    unavailable: '设置不可用。',
+    readOnly: '此设置为只读。',
+    saveFailed: '未能保存设置。',
+  },
+  ja: {
+    mode: '展開モード',
+    fullscreen: '全画面',
+    leftSidebar: '左サイドバーまで広げる',
+    loading: '設定を読み込み中…',
+    saving: '保存中…',
+    unavailable: '設定を利用できません。',
+    readOnly: 'この設定は読み取り専用です。',
+    saveFailed: '設定を保存できませんでした。',
+  },
+  de: {
+    mode: 'Öffnungsmodus',
+    fullscreen: 'Vollbild',
+    leftSidebar: 'Bis zur linken Seitenleiste erweitern',
+    loading: 'Einstellungen werden geladen …',
+    saving: 'Wird gespeichert …',
+    unavailable: 'Einstellungen sind nicht verfügbar.',
+    readOnly: 'Diese Einstellung ist schreibgeschützt.',
+    saveFailed: 'Die Einstellung konnte nicht gespeichert werden.',
+  },
+  es: {
+    mode: 'Modo de apertura',
+    fullscreen: 'Pantalla completa',
+    leftSidebar: 'Ampliar hasta la barra lateral izquierda',
+    loading: 'Cargando ajustes…',
+    saving: 'Guardando…',
+    unavailable: 'Los ajustes no están disponibles.',
+    readOnly: 'Este ajuste es de solo lectura.',
+    saveFailed: 'No se pudo guardar el ajuste.',
+  },
+  fr: {
+    mode: 'Mode d’ouverture',
+    fullscreen: 'Plein écran',
+    leftSidebar: 'Étendre jusqu’à la barre latérale gauche',
+    loading: 'Chargement des paramètres…',
+    saving: 'Enregistrement…',
+    unavailable: 'Les paramètres sont indisponibles.',
+    readOnly: 'Ce paramètre est en lecture seule.',
+    saveFailed: 'Impossible d’enregistrer le paramètre.',
+  },
+  pt: {
+    mode: 'Modo de abertura',
+    fullscreen: 'Tela cheia',
+    leftSidebar: 'Expandir até a barra lateral esquerda',
+    loading: 'Carregando configurações…',
+    saving: 'Salvando…',
+    unavailable: 'As configurações estão indisponíveis.',
+    readOnly: 'Esta configuração é somente leitura.',
+    saveFailed: 'Não foi possível salvar a configuração.',
+  },
+  ru: {
+    mode: 'Режим открытия',
+    fullscreen: 'На весь экран',
+    leftSidebar: 'Развернуть до левой панели',
+    loading: 'Загрузка настроек…',
+    saving: 'Сохранение…',
+    unavailable: 'Настройки недоступны.',
+    readOnly: 'Эта настройка доступна только для чтения.',
+    saveFailed: 'Не удалось сохранить настройку.',
+  },
+} satisfies Record<(typeof LOCALES)[number], Record<keyof typeof en, string>>
+
+export type LabelKey = keyof typeof LABELS.en

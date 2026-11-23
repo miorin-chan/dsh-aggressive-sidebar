@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "license": "MIT",
-  "description": "Opens the right sidebar fullscreen by default and moves keyboard focus into the active page.",
+  "description": "Expands the right sidebar fullscreen or up to the left sidebar and focuses the active page.",
   "type": "module",
   "keywords": [
     "deepseek-harness",
@@ -24,18 +24,20 @@
     "cordis.patch.yml",
     "locale/*.json",
     "icon.svg",
+    "THIRD_PARTY_NOTICES",
     "README.md",
     "README.zh.md",
     "AGENTS.md",
     "AGENTS.local.md",
     "docs/README.md",
+    "docs/DETAIL*.md",
     "src",
     "scripts",
     "tsconfig.json",
     "tsconfig.tools.json"
   ],
   "engines": {
-    "dsh": ">=0.2.2-rc.3"
+    "dsh": ">=0.2.2-rc.5"
   },
   "dsh": {
     "bundle": {
@@ -45,6 +47,8 @@
       "platform": "web",
       "immediately": true,
       "inject": [
+        "@deepseek-ai/dsh-client-locale",
+        "@deepseek-ai/dsh-client-ui-settings",
         "@deepseek-ai/dsh-client-ui-sidebar-right"
       ]
     }
@@ -60,10 +64,21 @@
   },
   "devDependencies": {
     "@deepseek-ai/cordis": "4.1.0",
+    "@deepseek-ai/dsh-client-locale": "0.2.2-rc.5",
+    "@deepseek-ai/dsh-client-store": "0.2.2-rc.5",
+    "@deepseek-ai/dsh-client-ui-layout": "0.2.2-rc.5",
+    "@deepseek-ai/dsh-client-ui-plugin-manager": "0.2.2-rc.5",
+    "@deepseek-ai/dsh-client-ui-renderer": "0.2.2-rc.5",
+    "@deepseek-ai/dsh-client-ui-settings": "0.2.2-rc.5",
     "@deepseek-ai/dsh-client-ui-sidebar-right": "0.2.2-rc.5",
+    "@deepseek-ai/dsh-client-ui-slots": "0.2.2-rc.5",
     "@deepseek-ai/dsh-session": "0.2.2-rc.5",
+    "@deepseek-ai/dsh-settings": "0.2.2-rc.5",
+    "@deepseek-ai/schemastery": "3.19.0",
     "@types/node": "^22.20.5",
+    "@types/react": "18.3.31",
     "esbuild": "0.28.2",
+    "react": "18.3.1",
     "typescript": "5.7.3"
   }
 }

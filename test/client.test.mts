@@ -1,4 +1,5 @@
 import assert from 'node:assert/strict'
+import { createRequire } from 'node:module'
 import { test } from 'node:test'
 
 /** Capture the module registration the browser module loader would receive. */
@@ -13,7 +14,7 @@ globalThis.window = {
 await import('../client.js')
 
 assert.equal(registration.id, '@miorin/dsh-sidebar-fullscreen')
-const plugin = registration.factory()
+const plugin = registration.factory(createRequire(import.meta.url))
 
 /** Let queued microtasks run. */
 const flush = () => new Promise(resolve => setTimeout(resolve, 0))
@@ -67,6 +68,7 @@ function harness({ adopted = new Map() } = {}) {
   const disposers = []
   const ctx = {
     sidebarRight: { adopted, mounted: { getSnapshot: () => undefined } },
+    inject() {}, // The focus fixture has no Plugins or settings services.
     effect(callback) {
       const dispose = callback()
       if (typeof dispose === 'function') disposers.push(dispose)
@@ -462,6 +464,7 @@ function focusHarness(t, {
   }
   const ctx = {
     sidebarRight: sidebar,
+    inject() {}, // The focus fixture has no Plugins or settings services.
     effect(callback) {
       const dispose = callback()
       if (typeof dispose === 'function') disposers.push(dispose)

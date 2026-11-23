@@ -1,6 +1,7 @@
 {
   "meta": {
-    "title": "Fokus auf die Seitenleiste",
-    "description": "Öffnet die rechte Seitenleiste standardmäßig im Vollbild und setzt den Tastaturfokus auf die aktive Seite. Über die Vollbild-Schaltfläche können Sie bis zum Schließen zur geteilten Ansicht wechseln. Beim nächsten Öffnen erscheint die Seitenleiste wieder im Vollbild. Bereits als Vollbild gespeicherte Layouts bleiben beim Deaktivieren des Plugins erhalten."
+    "title": "Größere Seitenleiste",
+    "description": "Die rechte Seitenleiste öffnet sich standardmäßig im Vollbild. In breiten Fenstern verdeckt sie mit „Bis zur linken Seitenleiste erweitern“ den Chat. Die linke Seitenleiste bleibt bedienbar.",
+    "detail": "docs/DETAIL.de.md"
   }
 }

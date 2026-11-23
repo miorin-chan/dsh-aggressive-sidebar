@@ -1,6 +1,4 @@
-# Activates the bundle. The Host half is inert; the Client half ships through
-# package.json `dsh.client` and pins the right Sidebar's presentation while the
-# column is collapsed.
+# Install the Host's opening-mode setting and activate the browser layout.
 - insert:
     - id: dsh-sidebar-fullscreen
       name: '@miorin/dsh-sidebar-fullscreen'

@@ -1,6 +1,7 @@
 {
   "meta": {
-    "title": "Foco en la barra lateral",
-    "description": "Abre la barra lateral derecha en pantalla completa de forma predeterminada y mueve el foco del teclado a la página activa. Puedes usar el control de pantalla completa para volver a la vista dividida hasta que cierres la barra lateral. La próxima vez se abrirá de nuevo en pantalla completa. Al desactivar el complemento se conservan las disposiciones guardadas en pantalla completa."
+    "title": "Barra lateral más amplia",
+    "description": "La barra lateral derecha se abre en pantalla completa por defecto. En ventanas amplias, «Ampliar hasta la barra lateral izquierda» cubre la conversación y deja la barra izquierda disponible.",
+    "detail": "docs/DETAIL.es.md"
   }
 }

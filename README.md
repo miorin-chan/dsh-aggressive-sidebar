@@ -1,43 +1,34 @@
-# Sidebar Focus
+# Larger sidebar
 
-Opens the DeepSeek Harness right sidebar fullscreen by default and moves keyboard focus into the active page.
+Expand the DeepSeek Harness right sidebar and move keyboard focus into the active page.
 
-DSH's right Sidebar has two presentations.
-**Split** (`push`) gives the panel a column and pushes the conversation aside;
-**fullscreen** covers the workspace while the wide-screen columns stay underneath.
-Every fresh panel starts in split view, so opening a file,
-terminal or browser always costs the conversation half the window.
-This plugin records fullscreen as the default, so every open lands fullscreen.
+In **Plugins → Larger sidebar → Opening mode**, choose how it opens:
 
-| Moment | Before | With this plugin |
-| --- | --- | --- |
-| First open of a session | split view | fullscreen |
-| Reopen after closing | split view | fullscreen |
-| Panel's fullscreen control while open | switches to split | unchanged, switches to split |
-| Collapse and reopen | split view | fullscreen again |
-| Reload with the panel still open | whatever was saved | unchanged while open; fullscreen from the next open |
-| Window narrower than 768 px | fullscreen (built in) | fullscreen |
+- **Fullscreen** covers the workspace.
+  This is the default.
+- **Expand to the left sidebar** covers the conversation area up to the left sidebar.
+  The left sidebar stays usable.
+
+DSH saves this preference in the active profile.
+Below 768 px, the right sidebar uses its built-in fullscreen layout.
 
 ## Requirements
 
-- DeepSeek Harness 0.2.2-rc.3 or newer (the version whose right Sidebar saves a per-session presentation).
+- DeepSeek Harness 0.2.2-rc.5 or newer.
   Desktop and Web both work.
 
 ## Install
 
 Run `pnpm install --frozen-lockfile` in a fresh checkout to install dependencies and build the plugin.
 Then select this directory in **Plugins** > **Add plugin**, or install it with `install_bundle`.
-The plugin appears in **Plugins** as **Sidebar Focus** / **侧栏聚焦**.
+The plugin appears in **Plugins** as **Larger sidebar** / **更大侧边栏**.
 
 ## Use
 
-Open the Sidebar as usual — a file link, a tool row's line reference, **Files**,
+Open the right sidebar from a file link, a tool row's line reference, **Files**,
 **Browser**, **Terminal**, or the header's expand button.
-The panel covers the workspace instead of sharing it.
-
-While the panel is open, its fullscreen control (and `pane.fullscreen.toggle`) still switches
-to the split view, and zooming/resizing behaves as before.
-The choice lasts until the panel closes; the next open is fullscreen again.
+While the panel is open, its presentation button or `pane.fullscreen.toggle` switches to split view.
+Closing and reopening the sidebar applies the mode saved on the plugin's detail page.
 
 Every opening moves keyboard focus into the panel: the header's expand button, the toggle shortcut,
 a file link, a tool row, **Files**, **Browser**, **Terminal**, or a sidebar entry.
@@ -60,13 +51,13 @@ A page that already owns focus is never overridden.
   the same change the panel control makes, so history, persistence and undo treat it like a user switch.
   A future DSH release that renames or reshapes those internals disables the plugin safely:
   the Sidebar behaves exactly as shipped, and one console warning names the missing piece.
-- An open panel is never changed, including one restored by a reload: the plugin only records fullscreen
-  while the column is collapsed.
+- The plugin records the native fullscreen presentation while the column is collapsed.
+  The opening mode sets the width of that presentation, including when a fullscreen panel is restored on reload.
+  The width follows the visible left sidebar, including the icon rail in Web.
 - The presentation is saved per session in `localStorage` (`dsh.sidebar-right.v1.<sessionId>`).
   Pins recorded while the plugin was enabled stay in that saved layout,
   so after disabling the plugin each session opens fullscreen until you switch it back once with the panel control,
   close it, and let DSH save the split choice.
-- Below 768 px the Sidebar is fullscreen on its own; the plugin changes nothing visible there.
 - Floating panels are untouched: they have no fullscreen presentation.
 - Focus falls back to the dock pane when the active page exposes no clear content stop.
   DSH publishes no page-focus API, so a page layout that moves or renames these markers falls back to pane focus.
@@ -76,8 +67,8 @@ A page that already owns focus is never overridden.
 ## Unload
 
 Disable the bundle in **Plugins**.
-The plugin restores the controller's store map, removes its click and focus listeners,
-cancels any pending focus retry, and removes the tabindex markers it added.
+The plugin removes its settings control and layout stylesheet, restores the controller's store map,
+removes its click and focus listeners, cancels pending focus, and removes the tabindex markers it added.
 Layouts already saved as fullscreen retain that setting.
 
 ## Tests

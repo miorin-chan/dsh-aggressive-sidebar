@@ -19,7 +19,6 @@ import { createRequire } from 'node:module'
 import { dirname, resolve } from 'node:path'
 import { fileURLToPath } from 'node:url'
 
-const require = createRequire(import.meta.url)
 const ROOT = resolve(dirname(fileURLToPath(import.meta.url)), '..')
 const CHECK = process.argv.includes('--check')
 
@@ -32,17 +31,18 @@ if (installDir === undefined || installDir === '') {
 interface Versions {
   dsh: string
   cordis: string
+  schemastery: string
 }
 
-/** The CLI version and the Cordis version the installation carries. */
+/** The CLI version and the versions of the installation's schema packages. */
 function installedVersions(installDir: string): Versions {
   try {
-    const dsh = JSON.parse(require('node:fs').readFileSync(resolve(installDir, 'package.json'), 'utf8'))
-    const cordis = JSON.parse(require('node:fs').readFileSync(
-      resolve(dirname(require.resolve('@deepseek-ai/cordis/package.json', { paths: [installDir] })), 'package.json'),
-      'utf8',
-    ))
-    return { dsh: dsh.version, cordis: cordis.version }
+    const installed = createRequire(resolve(installDir, 'package.json'))
+    return {
+      dsh: installed('./package.json').version,
+      cordis: installed('@deepseek-ai/cordis/package.json').version,
+      schemastery: installed('@deepseek-ai/schemastery/package.json').version,
+    }
   } catch (error) {
     const electron = process.env.DSH_NODE_EXECUTABLE
     if (electron === undefined || electron === '') throw error
@@ -53,7 +53,8 @@ function installedVersions(installDir: string): Versions {
       const req = createRequire(resolve(install, 'package.json'))
       const dsh = req('./package.json').version
       const cordis = req('@deepseek-ai/cordis/package.json').version
-      console.log(JSON.stringify({ dsh, cordis }))
+      const schemastery = req('@deepseek-ai/schemastery/package.json').version
+      console.log(JSON.stringify({ dsh, cordis, schemastery }))
     `
     const out = execFileSync(electron, ['-e', script], {
       encoding: 'utf8',
@@ -63,11 +64,12 @@ function installedVersions(installDir: string): Versions {
   }
 }
 
-const versions = installedVersions(installDir)
-const dshVersion = versions.dsh
-const cordisVersion = versions.cordis
-
-const expected = (name: string) => (name === '@deepseek-ai/cordis' ? cordisVersion : dshVersion)
+const { dsh: dshVersion, cordis: cordisVersion, schemastery: schemaVersion } = installedVersions(installDir)
+const independentVersions: Record<string, string> = {
+  '@deepseek-ai/cordis': cordisVersion,
+  '@deepseek-ai/schemastery': schemaVersion,
+}
+const expected = (name: string) => independentVersions[name] ?? dshVersion
 
 const pkg = JSON.parse(await readFile(resolve(ROOT, 'package.json'), 'utf8')) as { devDependencies?: Record<string, string> }
 const devDependencies = pkg.devDependencies ?? {}
@@ -93,7 +95,7 @@ if (CHECK) {
     console.error(`Run: node scripts/sync-types.mjs  (DSH ${dshVersion}, cordis ${cordisVersion})`)
     process.exitCode = 1
   } else {
-    console.log(`type packages match DSH ${dshVersion} / cordis ${cordisVersion}.`)
+    console.log(`packages match DSH ${dshVersion} / cordis ${cordisVersion} / schemastery ${schemaVersion}.`)
   }
 } else {
   const installs = pinned.map((name) => `${name}@${expected(name)}`).join(' ')

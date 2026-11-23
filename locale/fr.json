@@ -1,6 +1,7 @@
 {
   "meta": {
-    "title": "Focus sur la barre latérale",
-    "description": "Ouvre la barre latérale droite en plein écran par défaut et place le focus clavier sur la page active. La commande de plein écran permet de revenir à la vue côte à côte jusqu’à la fermeture de la barre latérale. À la prochaine ouverture, elle repasse en plein écran. La désactivation du plugin conserve les dispositions déjà enregistrées en plein écran."
+    "title": "Barre latérale agrandie",
+    "description": "La barre latérale droite s’ouvre en plein écran par défaut. Dans une fenêtre large, « Étendre jusqu’à la barre latérale gauche » recouvre la conversation et laisse la barre gauche accessible.",
+    "detail": "docs/DETAIL.fr.md"
   }
 }

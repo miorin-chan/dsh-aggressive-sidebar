@@ -1,6 +1,7 @@
 {
   "meta": {
-    "title": "Foco na barra lateral",
-    "description": "Abre a barra lateral direita em tela cheia por padrão e move o foco do teclado para a página ativa. Use o controle de tela cheia para voltar à visualização lado a lado até fechar a barra lateral. Na próxima abertura, ela volta à tela cheia. Desativar o complemento preserva os layouts já salvos em tela cheia."
+    "title": "Barra lateral maior",
+    "description": "A barra lateral direita abre em tela cheia por padrão. Em janelas largas, “Expandir até a barra lateral esquerda” cobre a conversa e mantém a barra esquerda disponível.",
+    "detail": "docs/DETAIL.pt.md"
   }
 }

@@ -5,7 +5,7 @@
 
 ## 范围与项目文档
 
-让右侧栏默认全屏，并在每次展开时把键盘焦点移入活动页面的内容。
+按详情页保存的模式展开右侧栏，并在每次打开时把键盘焦点移入活动页面。
 本项目保持独立安装和启停。
 
 [README.md](README.md) 为英文用户说明，[README.zh.md](README.zh.md) 为中文版本。
@@ -22,9 +22,11 @@ Node.js 22.18 或更新版本直接运行 `.test.mts`。
 
 - `src/client/index.ts` 是浏览器半的源码，`node scripts/build.mjs` 生成的 `client.js` 由 Git 忽略。
   改之前先读源码顶部的机制说明。产物不手改，`npm run check` 里的 `--check` 核对产物与源码是否一致。
-- `src/host/index.ts` 是 Host 半，保持无副作用，只用于让 bundle 行被加载。
+- `src/host/index.ts` 声明可即时保存的展开模式。
+  `src/client/mode-settings.tsx` 用 DSH 的 `configForms` 服务读取和写入该选项。
 - `tsconfig.json`、`scripts/build.mts`、`scripts/sync-types.mts` 是 TypeScript 基座，
-  模板来自工作区 `tools/dsh-plugin-ts/`；类型只以 `import type` 出现，产物里没有 `@deepseek-ai/*` 运行时依赖。
+  模板来自工作区 `tools/dsh-plugin-ts/`。
+  Host 自带构建时打包的配置验证库；Client 通过宿主服务和插槽复用原生能力。
 - `test/client.test.mts` 用假的 `ctx`、控制器、store 与页面固定默认全屏的判定、页面焦点落点与卸载还原。
   测试加载的是构建后的 `client.js`，源码迁移不改变它们。
 - `locale/*.json` 存放 Plugin Manager 的本地化元数据。
@@ -46,9 +48,10 @@ Node.js 22.18 或更新版本直接运行 `.test.mts`。
 - 新实现限于 DSH 支持的插件 API 和扩展点。
   禁止修改 DSH 源码或安装产物，也禁止用全局猴子补丁或覆写内部实现绕过边界。
   扩展点不足时说明缺口，并将实现限制在插件能力内。
-- 默认全屏的判定只看 store 快照里该会话的 `layout.expanded` 与 `layout.mode`。
-  焦点处理跟随 store 的 `expanded` 从 `false` 变 `true`，因此覆盖标题栏按钮、切换快捷键、
-  文件链接、工具行与侧栏入口；不推算侧栏几何。
+- 两种展开模式都复用原生全屏形态，预置逻辑只看该会话的 `layout.expanded` 与 `layout.mode`。
+  「展开到左边栏」在 `shell.overlay` 插槽挂载样式，让右侧栏跨越原生布局的第二、第三列，并隔离被覆盖的会话区。
+  窄屏抽屉沿用原生宽度。
+- 焦点处理跟随 store 的 `expanded` 从 `false` 变 `true`，覆盖标题栏按钮、切换快捷键、文件链接、工具行与侧栏入口。
 - 焦点先落到活动的停靠分栏，再落到活动页面的内容：嵌入 frame、编辑器、
   面积足够大的 `tabindex="-1"` 内容根，或页面的滚动查看器。
   没有 `tabindex` 的滚动查看器临时加 `tabindex="-1"` 与 `data-dsh-sidebar-fullscreen-focus`，卸载时按标记移除。
