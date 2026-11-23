@@ -75,7 +75,7 @@ Node.js 22.18 或更新版本直接运行 `.test.mts`。
   `node --test`、`tsc -p tsconfig.json`、
   `node scripts/build.mjs --check` 与 `node scripts/sync-types.mjs --check` 依次检查行为、类型、产物新鲜度与类型包版本。
 - DSH 升级后先 `node scripts/sync-types.mjs` 重新钉住类型包版本，再跑 `npm run check`。
-- 在默认工作区根运行 `node tools/new-dsh-plugin/cli.mjs --check plugins/dsh-sidebar-fullscreen`。
+- 在默认工作区根运行 `node tools/new-dsh-plugin/cli.mts --check plugins/dsh-sidebar-fullscreen`。
 - 安装、卸载及实机验证使用一次性 profile。
   报告区分夹具测试和实机观察。
 - 用 `docs/scripts/reflow md <path>` 重排修改过的英文 Markdown。
