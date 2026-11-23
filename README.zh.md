@@ -22,7 +22,8 @@ DSH 右侧栏有两种呈现形态：**分屏**（`push`，面板占一列，会
 
 ## 安装
 
-把这个目录作为本地 bundle 安装：**Plugins** > **Add plugin**，或由助手执行 `install_bundle`。
+在新检出的目录中运行 `pnpm install --frozen-lockfile` 安装依赖并构建插件。
+然后在 **Plugins** > **Add plugin** 中选择该目录，或由助手执行 `install_bundle`。
 安装后 **Plugins** 中显示为 **Sidebar Focus** / **侧栏聚焦**。
 
 ## 使用

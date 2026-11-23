@@ -25,8 +25,8 @@ This plugin records fullscreen as the default, so every open lands fullscreen.
 
 ## Install
 
-Install this directory as a local bundle: **Plugins** > **Add plugin**,
-or let the agent run `install_bundle` on this directory.
+Run `pnpm install --frozen-lockfile` in a fresh checkout to install dependencies and build the plugin.
+Then select this directory in **Plugins** > **Add plugin**, or install it with `install_bundle`.
 The plugin appears in **Plugins** as **Sidebar Focus** / **侧栏聚焦**.
 
 ## Use
