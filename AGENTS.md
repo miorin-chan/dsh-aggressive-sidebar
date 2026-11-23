@@ -118,4 +118,4 @@ Follow [Semantic Versioning 2.0.0](https://semver.org/) for every new release.
   A minor increment requires explicit user authorization.
 - When the current major version is `1` or higher, default to a patch increment.
   Agents may choose a minor increment when the scope of the changes warrants one under SemVer.
-- Any major increment, including the transition from `0.x.x` to `1.0.0`, requires explicit direction from the user.
+- A major increment always requires explicit direction from the user.
