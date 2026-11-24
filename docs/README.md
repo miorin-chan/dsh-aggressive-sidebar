@@ -10,7 +10,8 @@
 停用插件后，测试新会话是否回到原生分屏。
 
 构建后可用逐帧回归测试验证收展动画和减少动态效果。
-用 [dsh-web-drive](../../../tools/dsh-web-drive/README.md) 准备已安装插件的一次性英文 profile，将其登录 URL 传给测试。
+用 [dsh-web-drive](../../../tools/dsh-web-drive/README.md) 准备刚安装插件的一次性英文 profile，将其登录 URL 传给测试。
+测试从默认的「展开到左边栏」开始。
 
 ```sh
 DSH_SIDEBAR_TEST_URL="$test_profile_url" node --test test/sidebar-motion.test.mts

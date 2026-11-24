@@ -1,5 +1,5 @@
 /**
- * Browser half of `dsh-sidebar-fullscreen`.
+ * Browser half of `dsh-aggressive-sidebar`.
  *
  * DSH's right Sidebar (`ui-sidebar-right`) draws one panel per session in one of
  * two presentations: `push` — the panel takes a column and the conversation
@@ -212,7 +212,7 @@ const contentTarget = (section: HTMLElement): HTMLElement | undefined => {
   if (scroller === undefined) return undefined
   if (!scroller.hasAttribute('tabindex')) {
     scroller.setAttribute('tabindex', '-1')
-    scroller.setAttribute('data-dsh-sidebar-fullscreen-focus', '')
+    scroller.setAttribute('data-dsh-aggressive-sidebar-focus', '')
     addedTabIndex.add(scroller)
   }
   return scroller
@@ -444,9 +444,9 @@ ctx.effect(() => {
 ctx.effect(() => () => {
   cancelFocus()
   for (const element of addedTabIndex) {
-    if (element.getAttribute('tabindex') === '-1' && element.hasAttribute('data-dsh-sidebar-fullscreen-focus')) {
+    if (element.getAttribute('tabindex') === '-1' && element.hasAttribute('data-dsh-aggressive-sidebar-focus')) {
       element.removeAttribute('tabindex')
-      element.removeAttribute('data-dsh-sidebar-fullscreen-focus')
+      element.removeAttribute('data-dsh-aggressive-sidebar-focus')
     }
   }
   addedTabIndex.clear()

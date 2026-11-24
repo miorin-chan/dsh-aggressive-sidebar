@@ -1,7 +1,7 @@
 {
   "meta": {
-    "title": "Barra lateral maior",
-    "description": "A barra lateral direita abre em tela cheia por padrão. Em janelas largas, “Expandir até a barra lateral esquerda” cobre a conversa e mantém a barra esquerda disponível.",
+    "title": "Barra lateral agressiva",
+    "description": "Em janelas largas, a barra lateral direita se expande até a barra esquerda por padrão. Você pode mudar para tela cheia nos detalhes do plugin.",
     "detail": "docs/DETAIL.pt.md"
   }
 }

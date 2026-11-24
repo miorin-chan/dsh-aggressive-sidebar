@@ -6,10 +6,10 @@ function validate(value: unknown) {
   return Config['~standard'].validate(value)
 }
 
-test('defaults the existing empty config to fullscreen and accepts both opening modes', () => {
+test('defaults an empty config to the left sidebar and accepts both opening modes', () => {
   for (const [config, expected] of [
-    [undefined, 'fullscreen'],
-    [{}, 'fullscreen'],
+    [undefined, 'left-sidebar'],
+    [{}, 'left-sidebar'],
     [{ mode: 'fullscreen' }, 'fullscreen'],
     [{ mode: 'left-sidebar' }, 'left-sidebar'],
   ]) {

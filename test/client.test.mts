@@ -13,7 +13,7 @@ globalThis.window = {
 }
 await import('../client.js')
 
-assert.equal(registration.id, '@miorin/dsh-sidebar-fullscreen')
+assert.equal(registration.id, '@miorin/dsh-aggressive-sidebar')
 const plugin = registration.factory(createRequire(import.meta.url))
 
 /** Let queued microtasks run. */
@@ -175,7 +175,7 @@ test('fails safe when the public face no longer exposes the store map', async ()
     console.warn = warn
   }
   assert.equal(warnings.length, 1, 'the break is reported once')
-  assert.match(warnings[0], /dsh-sidebar-fullscreen/)
+  assert.match(warnings[0], /dsh-aggressive-sidebar/)
 })
 
 test('fails safe when a store lacks the presentation action', async () => {
@@ -516,10 +516,10 @@ test('gives a scroll viewer a focus stop and takes it back on unload', async t =
   ui.runFrame()
   assert.equal(ui.page.document.activeElement, ui.page.scroll)
   assert.equal(ui.page.scroll.getAttribute('tabindex'), '-1')
-  assert.equal(ui.page.scroll.hasAttribute('data-dsh-sidebar-fullscreen-focus'), true)
+  assert.equal(ui.page.scroll.hasAttribute('data-dsh-aggressive-sidebar-focus'), true)
   ui.disposeAll()
   assert.equal(ui.page.scroll.hasAttribute('tabindex'), false)
-  assert.equal(ui.page.scroll.hasAttribute('data-dsh-sidebar-fullscreen-focus'), false)
+  assert.equal(ui.page.scroll.hasAttribute('data-dsh-aggressive-sidebar-focus'), false)
 })
 
 test('prefers an editor or embedded frame over a scroll container', async t => {

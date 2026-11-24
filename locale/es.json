@@ -1,7 +1,7 @@
 {
   "meta": {
-    "title": "Barra lateral más amplia",
-    "description": "La barra lateral derecha se abre en pantalla completa por defecto. En ventanas amplias, «Ampliar hasta la barra lateral izquierda» cubre la conversación y deja la barra izquierda disponible.",
+    "title": "Barra lateral agresiva",
+    "description": "En ventanas amplias, la barra lateral derecha se extiende por defecto hasta la barra izquierda. Puedes cambiar a pantalla completa en los detalles del complemento.",
     "detail": "docs/DETAIL.es.md"
   }
 }

@@ -25,7 +25,7 @@ declare module '@deepseek-ai/dsh-client-ui-slots' {
 }
 
 const SETTINGS_CSS = `
-  .dsh-larger-sidebar-mode {
+  .dsh-aggressive-sidebar-mode {
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -33,7 +33,7 @@ const SETTINGS_CSS = `
     gap: 8px 16px;
     color: var(--dsw-alias-label-primary);
   }
-  .dsh-larger-sidebar-mode select {
+  .dsh-aggressive-sidebar-mode select {
     max-inline-size: 100%;
     min-block-size: 32px;
     padding-inline: 8px;
@@ -43,15 +43,15 @@ const SETTINGS_CSS = `
     color: inherit;
     font: inherit;
   }
-  .dsh-larger-sidebar-mode select:focus-visible {
+  .dsh-aggressive-sidebar-mode select:focus-visible {
     outline: var(--dsw-focus-ring-width, 2px) solid var(--dsw-focus-ring-color, var(--dsw-alias-state-business-primary));
     outline-offset: 2px;
   }
-  .dsh-larger-sidebar-status {
+  .dsh-aggressive-sidebar-status {
     margin: 6px 0 0;
     color: var(--dsw-alias-label-secondary);
   }
-  .dsh-larger-sidebar-status[role='alert'] { color: var(--dsw-alias-state-error-primary); }
+  .dsh-aggressive-sidebar-status[role='alert'] { color: var(--dsw-alias-state-error-primary); }
 `
 
 const MODE_LABEL = { fullscreen: 'fullscreen', 'left-sidebar': 'leftSidebar' } as const
@@ -87,7 +87,7 @@ function ModeSetting({ useSidebarSettings, saveMode, t }: ModeSettingProps) {
 
   return <>
     <style>{SETTINGS_CSS}</style>
-    <div className="dsh-larger-sidebar-mode" aria-busy={pending !== undefined || undefined}>
+    <div className="dsh-aggressive-sidebar-mode" aria-busy={pending !== undefined || undefined}>
       <label htmlFor={id}>{t('mode')}</label>
       <select id={id} name="dsh-sidebar-opening-mode" value={pending ?? mode} disabled={!canChoose}
         aria-disabled={pending !== undefined || undefined}
@@ -96,7 +96,7 @@ function ModeSetting({ useSidebarSettings, saveMode, t }: ModeSettingProps) {
         {OPENING_MODES.map(option => <option key={option} value={option}>{t(MODE_LABEL[option])}</option>)}
       </select>
     </div>
-    {feedback !== undefined && <p id={`${id}-status`} className="dsh-larger-sidebar-status" role={failed ? 'alert' : 'status'}>
+    {feedback !== undefined && <p id={`${id}-status`} className="dsh-aggressive-sidebar-status" role={failed ? 'alert' : 'status'}>
       {feedback}
     </p>}
   </>
@@ -148,7 +148,7 @@ const WIDE_CSS = `
 `
 
 function SidebarWidth({ useSidebarSettings }: InjectFace<Pick<ModeSettingsInjected, 'hooks'>>) {
-  const wide = useSidebarSettings(state => state.status === 'ready' && state.value?.mode === 'left-sidebar')
+  const wide = useSidebarSettings(state => state.status === 'ready' && (state.value?.mode ?? DEFAULT_MODE) === 'left-sidebar')
   return wide ? <style>{WIDE_CSS}</style> : null
 }
 

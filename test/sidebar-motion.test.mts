@@ -77,20 +77,16 @@ test('the right panel follows the animated left sidebar edge', { timeout: 60_000
   try {
     const plugins = byLabel('Plugins')
     const preview = hittable(byText('Continue'))
-    const onboarding = `document.body.innerText.includes('Get started')`
+    const onboarding = `document.body?.innerText.includes('Get started')`
     await page.waitFor(`${preview} || ${onboarding} || ${hittable(plugins)}`)
     if (await page.eval(preview)) await click(page, byText('Continue'))
     await page.waitFor(`${onboarding} || ${hittable(plugins)}`)
     if (await page.eval(onboarding)) await page.key('Escape')
     await click(page, plugins)
-    await click(page, byLabel('View Larger sidebar'))
+    await click(page, byLabel('View Aggressive sidebar'))
     await page.waitFor(`Boolean(document.querySelector('${mode}:enabled'))`)
-    await page.eval(`(() => {
-      const select = document.querySelector('${mode}')
-      select.value = 'left-sidebar'
-      select.dispatchEvent(new Event('change', { bubbles: true }))
-    })()`)
-    await page.waitFor(`document.querySelector('${mode}:enabled:not([aria-disabled])')?.value === 'left-sidebar'`)
+    assert.equal(await page.eval(`document.querySelector('${mode}').value`), 'left-sidebar',
+      'a fresh profile defaults to the left sidebar')
     await click(page, byLabel('New session'))
     await click(page, bySel('[data-sidebar-right-expand]'))
     await page.waitFor(`Boolean(document.querySelector(${JSON.stringify(panel)})?.closest('[data-rightbar-fullscreen]:not([data-animating])'))`)

@@ -1,13 +1,12 @@
-# Larger sidebar
+# Aggressive sidebar
 
 Expand the DeepSeek Harness right sidebar and move keyboard focus into the active page.
 
-In **Plugins → Larger sidebar → Opening mode**, choose how it opens:
+Choose an opening mode in **Plugins → Aggressive sidebar → Opening mode**.
 
+- **Expand to the left sidebar** is the default.
+  It covers the conversation area and leaves the left sidebar usable.
 - **Fullscreen** covers the workspace.
-  This is the default.
-- **Expand to the left sidebar** covers the conversation area up to the left sidebar.
-  The left sidebar stays usable.
 
 DSH saves this preference in the active profile.
 Below 768 px, the right sidebar uses its built-in fullscreen layout.
@@ -21,7 +20,7 @@ Below 768 px, the right sidebar uses its built-in fullscreen layout.
 
 Run `pnpm install --frozen-lockfile` in a fresh checkout to install dependencies and build the plugin.
 Then select this directory in **Plugins** > **Add plugin**, or install it with `install_bundle`.
-The plugin appears in **Plugins** as **Larger sidebar** / **更大侧边栏**.
+The plugin appears in **Plugins** as **Aggressive sidebar** / **激进侧边栏**.
 
 ## Use
 
@@ -61,7 +60,7 @@ A page that already owns focus is never overridden.
 - Floating panels are untouched: they have no fullscreen presentation.
 - Focus falls back to the dock pane when the active page exposes no clear content stop.
   DSH publishes no page-focus API, so a page layout that moves or renames these markers falls back to pane focus.
-  The `tabindex="-1"` and `data-dsh-sidebar-fullscreen-focus` marker added to a focused scroll viewer are removed
+  The `tabindex="-1"` and `data-dsh-aggressive-sidebar-focus` marker added to a focused scroll viewer are removed
   on unload.
 
 ## Unload

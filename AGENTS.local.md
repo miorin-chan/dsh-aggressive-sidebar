@@ -27,7 +27,7 @@ Node.js 22.18 或更新版本直接运行 `.test.mts`。
 - `tsconfig.json`、`scripts/build.mts`、`scripts/sync-types.mts` 是 TypeScript 基座，
   模板来自工作区 `tools/dsh-plugin-ts/`。
   Host 自带构建时打包的配置验证库；Client 通过宿主服务和插槽复用原生能力。
-- `test/client.test.mts` 用假的 `ctx`、控制器、store 与页面固定默认全屏的判定、页面焦点落点与卸载还原。
+- `test/client.test.mts` 用假的 `ctx`、控制器、store 与页面验证全屏形态的预置、页面焦点与卸载还原。
   测试加载的是构建后的 `client.js`，源码迁移不改变它们。
 - `locale/*.json` 存放 Plugin Manager 的本地化元数据。
 
@@ -54,7 +54,7 @@ Node.js 22.18 或更新版本直接运行 `.test.mts`。
 - 焦点处理跟随 store 的 `expanded` 从 `false` 变 `true`，覆盖标题栏按钮、切换快捷键、文件链接、工具行与侧栏入口。
 - 焦点先落到活动的停靠分栏，再落到活动页面的内容：嵌入 frame、编辑器、
   面积足够大的 `tabindex="-1"` 内容根，或页面的滚动查看器。
-  没有 `tabindex` 的滚动查看器临时加 `tabindex="-1"` 与 `data-dsh-sidebar-fullscreen-focus`，卸载时按标记移除。
+  没有 `tabindex` 的滚动查看器临时加 `tabindex="-1"` 与 `data-dsh-aggressive-sidebar-focus`，卸载时按标记移除。
   页面已有焦点时不覆盖。
 - 聚焦补试在页面取得焦点、面板关闭或切换会话、下一次指针或按键、窗口失焦或 800 毫秒后结束。
   标题栏展开按钮只通过控制器的原生 `toggleExpanded` 打开；不模拟点击，也不直接写 store 的展开状态。
@@ -78,7 +78,7 @@ Node.js 22.18 或更新版本直接运行 `.test.mts`。
   `node --test`、`tsc -p tsconfig.json`、
   `node scripts/build.mjs --check` 与 `node scripts/sync-types.mjs --check` 依次检查行为、类型、产物新鲜度与类型包版本。
 - DSH 升级后先 `node scripts/sync-types.mjs` 重新钉住类型包版本，再跑 `npm run check`。
-- 在默认工作区根运行 `node tools/new-dsh-plugin/cli.mts --check plugins/dsh-sidebar-fullscreen`。
+- 在默认工作区根运行 `node tools/new-dsh-plugin/cli.mts --check plugins/dsh-aggressive-sidebar`。
 - 安装、卸载及实机验证使用一次性 profile。
   报告区分夹具测试和实机观察。
 - 用 `docs/scripts/reflow md <path>` 重排修改过的英文 Markdown。

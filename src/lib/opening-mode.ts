@@ -1,9 +1,9 @@
-export const ENTRY_ID = 'dsh-sidebar-fullscreen'
-export const PACKAGE_NAME = '@miorin/dsh-sidebar-fullscreen'
+export const ENTRY_ID = 'dsh-aggressive-sidebar'
+export const PACKAGE_NAME = '@miorin/dsh-aggressive-sidebar'
 
 export const OPENING_MODES = ['fullscreen', 'left-sidebar'] as const
 export type OpeningMode = typeof OPENING_MODES[number]
-export const DEFAULT_MODE: OpeningMode = 'fullscreen'
+export const DEFAULT_MODE: OpeningMode = 'left-sidebar'
 
 export interface SidebarSettings {
   readonly mode: OpeningMode

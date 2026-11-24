@@ -1,7 +1,7 @@
 {
   "meta": {
-    "title": "Larger sidebar",
-    "description": "The right sidebar opens fullscreen by default. In wide windows, choose “Expand to the left sidebar” to cover the conversation and keep the left sidebar usable.",
+    "title": "Aggressive sidebar",
+    "description": "In wide windows, the right sidebar opens up to the left sidebar by default. You can switch to fullscreen in the plugin details.",
     "detail": "docs/DETAIL.md"
   }
 }

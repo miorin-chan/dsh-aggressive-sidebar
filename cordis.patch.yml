@@ -1,4 +1,4 @@
 # Install the Host's opening-mode setting and activate the browser layout.
 - insert:
-    - id: dsh-sidebar-fullscreen
-      name: '@miorin/dsh-sidebar-fullscreen'
+    - id: dsh-aggressive-sidebar
+      name: '@miorin/dsh-aggressive-sidebar'

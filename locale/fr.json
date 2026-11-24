@@ -1,7 +1,7 @@
 {
   "meta": {
-    "title": "Barre latérale agrandie",
-    "description": "La barre latérale droite s’ouvre en plein écran par défaut. Dans une fenêtre large, « Étendre jusqu’à la barre latérale gauche » recouvre la conversation et laisse la barre gauche accessible.",
+    "title": "Barre latérale agressive",
+    "description": "Dans une fenêtre large, la barre latérale droite s’étend par défaut jusqu’à la barre de gauche. Le mode plein écran est disponible dans les détails de l’extension.",
     "detail": "docs/DETAIL.fr.md"
   }
 }

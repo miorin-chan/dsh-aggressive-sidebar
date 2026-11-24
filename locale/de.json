@@ -1,7 +1,7 @@
 {
   "meta": {
-    "title": "Größere Seitenleiste",
-    "description": "Die rechte Seitenleiste öffnet sich standardmäßig im Vollbild. In breiten Fenstern verdeckt sie mit „Bis zur linken Seitenleiste erweitern“ den Chat. Die linke Seitenleiste bleibt bedienbar.",
+    "title": "Aggressive Seitenleiste",
+    "description": "In breiten Fenstern reicht die rechte Seitenleiste standardmäßig bis zur linken Seitenleiste. In den Plugin-Details kannst du auf Vollbild umschalten.",
     "detail": "docs/DETAIL.de.md"
   }
 }
