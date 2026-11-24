@@ -53,6 +53,15 @@ const SETTINGS_CSS = `
     color: var(--dsw-alias-label-secondary);
   }
   .dsh-aggressive-sidebar-status[role='alert'] { color: var(--dsw-alias-state-error-primary); }
+  /* @deepseek-ai/dsh-client-ui-plugin-manager 0.2.2-rc.5, src/client/PluginManagerPage.tsx & PluginManagerPage.module.css:
+     .detailSections flex column and [data-slot="plugins.detail.section"] display:contents. */
+  [data-plugin-detail] > div:has(> [data-slot="plugins.detail.section"] > .dsh-aggressive-sidebar-settings) > [data-detail-document] {
+    order: -2;
+  }
+  [data-plugin-detail] > div:has(> [data-slot="plugins.detail.section"] > .dsh-aggressive-sidebar-settings) > [data-plugin-config],
+  [data-plugin-detail] [data-slot="plugins.detail.section"] > .dsh-aggressive-sidebar-settings {
+    order: -1;
+  }
 `
 
 const MODE_LABEL = { fullscreen: 'fullscreen', 'left-sidebar': 'leftSidebar' } as const
@@ -86,7 +95,7 @@ function ModeSetting({ useSidebarSettings, saveMode, t }: ModeSettingProps) {
     }
   }
 
-  return <div>
+  return <div className="dsh-aggressive-sidebar-settings">
     <style>{SETTINGS_CSS}</style>
     <div className="dsh-aggressive-sidebar-mode" aria-busy={pending !== undefined || undefined}>
       <label htmlFor={id}>{t('mode')}</label>

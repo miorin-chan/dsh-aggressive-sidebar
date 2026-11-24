@@ -114,6 +114,36 @@ test('shows one mode form on the detail page that owns the enabled sidebar row',
   assert.deepEqual(writes, [['mode', 'fullscreen']])
   disposeAll()
   assert.equal(slots.size, 0)
+
+  const req = createRequire(import.meta.url)
+  const stubReact = { ...req('react'), useId: () => ':mode-0:', useState: initial => [initial, () => {}] }
+  const stubPlugin = registration.factory(id => id === 'react' ? stubReact : req(id))
+  const stubSlots = new Map()
+  const stubHarness = harness()
+  stubHarness.ctx.inject = (_services, apply) => apply(stubHarness.ctx)
+  stubHarness.ctx.configForms = { get: () => form }
+  stubHarness.ctx.locale = { register() {} }
+  stubHarness.ctx.slots = {
+    inject: (_name, register) => stubHarness.ctx.effect(register),
+    register(options, render) {
+      stubSlots.set(options.name, { options, render })
+      return () => stubSlots.delete(options.name)
+    },
+  }
+  stubPlugin.apply(stubHarness.ctx)
+  const stubAggregate = stubSlots.get('plugins.detail.section')
+  const stubElement = stubAggregate.render({
+    subject: { kind: 'bundle', pkg },
+    saveMode: stubAggregate.options.inject().saveMode,
+    useSidebarSettings: sel => sel({ status: 'ready', value: { mode: 'left-sidebar' }, writable: true }),
+    t: String,
+  })
+  const modeElement = stubElement.type(stubElement.props)
+  assert.equal(modeElement.props.className, 'dsh-aggressive-sidebar-settings')
+  const styleText = modeElement.props.children.find(child => child?.type === 'style')?.props?.children ?? ''
+  assert.match(styleText, /\[data-detail-document\][^}]*order:\s*-2/)
+  assert.match(styleText, /\[data-slot="plugins\.detail\.section"\]\s*>\s*\.dsh-aggressive-sidebar-settings[^}]*order:\s*-1/)
+  stubHarness.disposeAll()
 })
 
 test('pins a collapsed surface to fullscreen before the panel is ever opened', async () => {
