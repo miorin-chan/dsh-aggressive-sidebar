@@ -78,6 +78,44 @@ function harness({ adopted = new Map() } = {}) {
   return { ctx, adopted, disposeAll() { for (const dispose of disposers.reverse()) dispose() } }
 }
 
+test('shows one mode form on the detail page that owns the enabled sidebar row', async () => {
+  const { ctx, disposeAll } = harness()
+  const slots = new Map()
+  const writes = []
+  const form = { set: async (key, value) => { writes.push([key, value]); return true } }
+  ctx.inject = (_services, apply) => apply(ctx)
+  ctx.configForms = { get(id) { assert.equal(id, 'dsh-aggressive-sidebar'); return form } }
+  ctx.locale = { register() {} }
+  ctx.slots = {
+    inject: (_name, register) => ctx.effect(register),
+    register(options, render) {
+      slots.set(options.name, { options, render })
+      return () => slots.delete(options.name)
+    },
+  }
+
+  plugin.apply(ctx)
+  const standalone = slots.get('plugins.bundle.config')
+  const aggregate = slots.get('plugins.detail.section')
+  const row = { rowId: 'dsh-aggressive-sidebar', moduleName: registration.id, enabled: true }
+  const pkg = { name: '@local/ui-bundle', enabled: true, rows: [row] }
+  const settings = aggregate.options.inject()
+  const renderBundle = pkg => aggregate.render({ subject: { kind: 'bundle', pkg }, saveMode: settings.saveMode })
+  assert.equal(standalone.options.key, registration.id)
+  assert.equal(standalone.options.inject(), settings)
+  assert.equal(renderBundle(pkg).type, standalone.render)
+  assert.equal(renderBundle({ ...pkg, name: registration.id }), null, 'the standalone form already has its own slot')
+  assert.equal(renderBundle({ ...pkg, enabled: false }), null)
+  assert.equal(renderBundle({ ...pkg, rows: [{ ...row, enabled: false }] }), null)
+  assert.equal(renderBundle({ ...pkg, rows: [{ ...row, moduleName: '@local/other-sidebar' }] }), null)
+  assert.equal(renderBundle({ ...pkg, rows: [{ ...row, rowId: 'different-row' }] }), null)
+  assert.equal(aggregate.render({ subject: { kind: 'row', pkg, row } }), null)
+  assert.equal(await settings.saveMode('fullscreen'), true)
+  assert.deepEqual(writes, [['mode', 'fullscreen']])
+  disposeAll()
+  assert.equal(slots.size, 0)
+})
+
 test('pins a collapsed surface to fullscreen before the panel is ever opened', async () => {
   const { ctx, adopted } = harness()
   const session = surfaceStore('s1')

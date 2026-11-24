@@ -3,6 +3,7 @@
 Expand the DeepSeek Harness right sidebar and move keyboard focus into the active page.
 
 Choose an opening mode in **Plugins → Aggressive sidebar → Opening mode**.
+When an aggregate bundle provides Aggressive sidebar, choose **Opening mode** on that bundle's detail page.
 
 - **Expand to the left sidebar** is the default.
   It covers the conversation area and leaves the left sidebar usable.
