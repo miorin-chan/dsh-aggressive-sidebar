@@ -1,12 +1,18 @@
 import type { Context } from '@deepseek-ai/cordis'
 import type {} from '@deepseek-ai/dsh-client-locale/client'
+import {
+  IconFullscreenOutlineMedium,
+  IconPanelLeftOutlineMedium,
+  SegmentedControl,
+  StateDot,
+} from '@deepseek-ai/dsh-client-ui-primitives'
 import type {} from '@deepseek-ai/dsh-client-ui-layout/client'
 import type {} from '@deepseek-ai/dsh-client-ui-plugin-manager/client'
 import type {} from '@deepseek-ai/dsh-client-ui-renderer/client'
 import type { ConfigForm } from '@deepseek-ai/dsh-client-ui-settings/client'
 import type { InjectFace, PropsLocale } from '@deepseek-ai/dsh-client-ui-slots'
 import { useId, useState } from 'react'
-import { DEFAULT_MODE, ENTRY_ID, isOpeningMode, OPENING_MODES, PACKAGE_NAME } from '../lib/opening-mode.js'
+import { DEFAULT_MODE, ENTRY_ID, isOpeningMode, PACKAGE_NAME } from '../lib/opening-mode.js'
 import type { OpeningMode, SidebarSettings } from '../lib/opening-mode.js'
 import { LABELS, type LabelKey } from './labels.js'
 
@@ -25,46 +31,137 @@ declare module '@deepseek-ai/dsh-client-ui-slots' {
 }
 
 const SETTINGS_CSS = `
-  .dsh-aggressive-sidebar-mode {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
+.dsh-aggressive-sidebar-settings {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  min-width: 0;
+  container-type: inline-size;
+  color: var(--dsw-alias-label-primary);
+}
+[data-dsh-aggregate-member] .dsh-as-head {
+  display: none;
+}
+.dsh-as-head {
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+}
+.dsh-as-heading {
+  margin: 0;
+  font-size: 14px;
+  line-height: 20px;
+  font-weight: 500;
+  color: var(--dsw-alias-label-primary);
+}
+.dsh-as-card {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  border: 0.5px solid var(--dsw-alias-border-l2);
+  border-radius: var(--dsw-radius-lg, 16px);
+  background: var(--dsw-alias-card-fill);
+  overflow: hidden;
+}
+.dsh-as-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  min-width: 0;
+  padding: 14px 16px;
+}
+.dsh-as-icon {
+  display: inline-flex;
+  flex: none;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  box-sizing: border-box;
+  border: 0.5px solid var(--dsw-alias-border-l2);
+  border-radius: var(--dsw-radius-sm, 8px);
+  background: var(--dsw-alias-bg-layer-2);
+  color: var(--dsw-alias-label-secondary);
+}
+.dsh-as-copy {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+}
+.dsh-as-title-line {
+  display: inline-flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 8px;
+  min-width: 0;
+}
+.dsh-as-title {
+  font-size: 13.5px;
+  line-height: 20px;
+  font-weight: 500;
+  color: var(--dsw-alias-label-primary);
+}
+.dsh-as-desc {
+  margin: 0;
+  font-size: 12px;
+  line-height: 18px;
+  color: var(--dsw-alias-label-tertiary);
+  overflow-wrap: anywhere;
+}
+.dsh-as-control {
+  display: inline-flex;
+  flex: none;
+  align-items: center;
+  max-width: 100%;
+}
+.dsh-as-segmented {
+  max-width: 100%;
+}
+.dsh-as-status {
+  margin: 0;
+  padding: 10px 16px;
+  border-top: 0.5px solid var(--dsw-alias-border-l2);
+  font-size: 12px;
+  line-height: 18px;
+  color: var(--dsw-alias-label-secondary);
+  overflow-wrap: anywhere;
+}
+.dsh-as-status[role='alert'] {
+  color: var(--dsw-alias-state-error-primary);
+}
+@container (max-width: 520px) {
+  .dsh-as-row {
     flex-wrap: wrap;
-    gap: 8px 16px;
-    color: var(--dsw-alias-label-primary);
+    align-items: flex-start;
   }
-  .dsh-aggressive-sidebar-mode select {
-    max-inline-size: 100%;
-    min-block-size: 32px;
-    padding-inline: 8px;
-    border: 1px solid var(--dsw-alias-border-l3);
-    border-radius: var(--dsw-radius-sm);
-    background: var(--dsw-alias-bg-layer-1);
-    color: inherit;
-    font: inherit;
+  .dsh-as-copy {
+    flex: 1 1 calc(100% - 44px);
   }
-  .dsh-aggressive-sidebar-mode select:focus-visible {
-    outline: var(--dsw-focus-ring-width, 2px) solid var(--dsw-focus-ring-color, var(--dsw-alias-state-business-primary));
-    outline-offset: 2px;
+  .dsh-as-control {
+    width: 100%;
+    box-sizing: border-box;
+    padding-inline-start: 44px;
   }
-  .dsh-aggressive-sidebar-status {
-    margin: 6px 0 0;
-    color: var(--dsw-alias-label-secondary);
-  }
-  .dsh-aggressive-sidebar-status[role='alert'] { color: var(--dsw-alias-state-error-primary); }
+}
 `
 
-const MODE_LABEL = { fullscreen: 'fullscreen', 'left-sidebar': 'leftSidebar' } as const
+type ModeSettingProps = InjectFace<ModeSettingsInjected> & PropsLocale<typeof ENTRY_ID> & {
+  readonly view?: 'summary' | 'page'
+}
 
-type ModeSettingProps = InjectFace<ModeSettingsInjected> & PropsLocale<typeof ENTRY_ID>
-
-function ModeSetting({ useSidebarSettings, saveMode, t }: ModeSettingProps) {
+function ModeSetting({ useSidebarSettings, saveMode, t, view }: ModeSettingProps) {
   const { status, value, writable } = useSidebarSettings(state => state)
   const [pending, setPending] = useState<OpeningMode>()
   const [failed, setFailed] = useState(false)
   const id = useId()
+  if (view === 'summary') return null
+
   const mode = value?.mode ?? DEFAULT_MODE
+  const activeMode = pending ?? mode
   const canChoose = status === 'ready' && writable
+  const busy = pending !== undefined || status === 'loading'
   const feedback = pending !== undefined ? t('saving')
     : failed ? t('saveFailed')
     : status === 'loading' ? t('loading')
@@ -85,21 +182,51 @@ function ModeSetting({ useSidebarSettings, saveMode, t }: ModeSettingProps) {
     }
   }
 
-  return <div className="dsh-aggressive-sidebar-settings">
-    <style>{SETTINGS_CSS}</style>
-    <div className="dsh-aggressive-sidebar-mode" aria-busy={pending !== undefined || undefined}>
-      <label htmlFor={id}>{t('mode')}</label>
-      <select id={id} name="dsh-sidebar-opening-mode" value={pending ?? mode} disabled={!canChoose}
-        aria-disabled={pending !== undefined || undefined}
-        aria-describedby={feedback === undefined ? undefined : `${id}-status`}
-        onChange={event => { void choose(event.currentTarget.value) }}>
-        {OPENING_MODES.map(option => <option key={option} value={option}>{t(MODE_LABEL[option])}</option>)}
-      </select>
+  return (
+    <div className="dsh-aggressive-sidebar-settings" data-dsh-aggressive-sidebar-settings="">
+      <style>{SETTINGS_CSS}</style>
+      <div className="dsh-as-head">
+        <h4 className="dsh-as-heading">{t('sectionTitle')}</h4>
+      </div>
+      <div className="dsh-as-card">
+        <div className="dsh-as-row" aria-busy={busy || undefined}>
+          <span className="dsh-as-icon" aria-hidden="true">
+            {activeMode === 'left-sidebar'
+              ? <IconPanelLeftOutlineMedium size={16} />
+              : <IconFullscreenOutlineMedium size={16} />}
+          </span>
+          <div className="dsh-as-copy">
+            <div className="dsh-as-title-line">
+              <span className="dsh-as-title">{t('mode')}</span>
+              {busy && <StateDot state="ongoing" size={12} />}
+            </div>
+            <p className="dsh-as-desc">
+              {t(activeMode === 'left-sidebar' ? 'leftSidebarHint' : 'fullscreenHint')}
+            </p>
+          </div>
+          <div className="dsh-as-control" aria-describedby={feedback === undefined ? undefined : `${id}-status`}>
+            <SegmentedControl
+              id={id}
+              value={activeMode}
+              label={t('mode')}
+              disabled={!canChoose}
+              className="dsh-as-segmented"
+              options={[
+                { value: 'left-sidebar', label: t('leftSidebar'), title: t('leftSidebarHint') },
+                { value: 'fullscreen', label: t('fullscreen'), title: t('fullscreenHint') },
+              ]}
+              onChange={next => { void choose(next) }}
+            />
+          </div>
+        </div>
+        {feedback !== undefined && (
+          <p id={`${id}-status`} className="dsh-as-status" role={failed ? 'alert' : 'status'}>
+            {feedback}
+          </p>
+        )}
+      </div>
     </div>
-    {feedback !== undefined && <p id={`${id}-status`} className="dsh-aggressive-sidebar-status" role={failed ? 'alert' : 'status'}>
-      {feedback}
-    </p>}
-  </div>
+  )
 }
 
 // AppFrame.tsx and AppFrame.module.css (dsh-client-ui-layout 0.2.2-rc.5).

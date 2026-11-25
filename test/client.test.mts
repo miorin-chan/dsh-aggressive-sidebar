@@ -14,7 +14,14 @@ globalThis.window = {
 await import('../client.js')
 
 assert.equal(registration.id, '@miorin/dsh-aggressive-sidebar')
-const plugin = registration.factory(createRequire(import.meta.url))
+const req = createRequire(import.meta.url)
+const fakePrimitives = {
+  SegmentedControl: () => null,
+  StateDot: () => null,
+  IconFullscreenOutlineMedium: () => null,
+  IconPanelLeftOutlineMedium: () => null,
+}
+const plugin = registration.factory(id => id === '@deepseek-ai/dsh-client-ui-primitives' ? fakePrimitives : req(id))
 
 /** Let queued microtasks run. */
 const flush = () => new Promise(resolve => setTimeout(resolve, 0))
@@ -107,7 +114,11 @@ test('registers mode form only on plugins.bundle.config without detail-section h
 
   const req = createRequire(import.meta.url)
   const stubReact = { ...req('react'), useId: () => ':mode-0:', useState: initial => [initial, () => {}] }
-  const stubPlugin = registration.factory(id => id === 'react' ? stubReact : req(id))
+  const stubPlugin = registration.factory(id => {
+    if (id === 'react') return stubReact
+    if (id === '@deepseek-ai/dsh-client-ui-primitives') return fakePrimitives
+    return req(id)
+  })
   const stubSlots = new Map()
   const stubHarness = harness()
   stubHarness.ctx.inject = (_services, apply) => apply(stubHarness.ctx)
@@ -122,7 +133,14 @@ test('registers mode form only on plugins.bundle.config without detail-section h
   }
   stubPlugin.apply(stubHarness.ctx)
   const stubStandalone = stubSlots.get('plugins.bundle.config')
+  assert.equal(stubStandalone.render({
+    view: 'summary',
+    saveMode: stubStandalone.options.inject().saveMode,
+    useSidebarSettings: sel => sel({ status: 'ready', value: { mode: 'left-sidebar' }, writable: true }),
+    t: String,
+  }), null)
   const modeElement = stubStandalone.render({
+    view: 'page',
     saveMode: stubStandalone.options.inject().saveMode,
     useSidebarSettings: sel => sel({ status: 'ready', value: { mode: 'left-sidebar' }, writable: true }),
     t: String,
@@ -130,6 +148,10 @@ test('registers mode form only on plugins.bundle.config without detail-section h
   assert.equal(modeElement.props.className, 'dsh-aggressive-sidebar-settings')
   const styleText = modeElement.props.children.find(child => child?.type === 'style')?.props?.children ?? ''
   assert.doesNotMatch(styleText, /plugins\.detail\.section/)
+  assert.match(styleText, /@container \(max-width: 520px\)/)
+  assert.match(styleText, /\[data-dsh-aggregate-member\]/)
+  const serialized = JSON.stringify(modeElement, (_key, value) => typeof value === 'function' ? value.name : value)
+  assert.match(serialized, /SegmentedControl/)
   stubHarness.disposeAll()
 })
 

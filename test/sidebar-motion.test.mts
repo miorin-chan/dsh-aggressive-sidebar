@@ -3,7 +3,7 @@ import { test } from 'node:test'
 import type { Page } from '../../../tools/dsh-web-drive/lib/page.mts'
 
 const panel = '[data-sidebar-right-session]:not([hidden]) [data-sidebar-right-panel="fullscreen"][data-sidebar-right-open]'
-const mode = 'select[name="dsh-sidebar-opening-mode"]'
+const mode = '[data-dsh-aggressive-sidebar-settings] [role="tablist"]'
 
 interface Edges {
   sidebarRight: number
@@ -84,8 +84,8 @@ test('the right panel follows the animated left sidebar edge', { timeout: 60_000
     if (await page.eval(onboarding)) await page.key('Escape')
     await click(page, plugins)
     await click(page, byLabel('View Aggressive sidebar'))
-    await page.waitFor(`Boolean(document.querySelector('${mode}:enabled'))`)
-    assert.equal(await page.eval(`document.querySelector('${mode}').value`), 'left-sidebar',
+    await page.waitFor(`Boolean(document.querySelector('${mode}'))`)
+    assert.equal(await page.eval(`document.querySelector('${mode} [role="tab"][id$="-left-sidebar"]:not(:disabled)')?.getAttribute('aria-selected')`), 'true',
       'a fresh profile defaults to the left sidebar')
     await click(page, byLabel('New session'))
     await click(page, bySel('[data-sidebar-right-expand]'))
