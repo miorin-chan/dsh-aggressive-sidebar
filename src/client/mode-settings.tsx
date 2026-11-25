@@ -1,7 +1,7 @@
 import type { Context } from '@deepseek-ai/cordis'
 import type {} from '@deepseek-ai/dsh-client-locale/client'
 import type {} from '@deepseek-ai/dsh-client-ui-layout/client'
-import type { PluginDetailProps } from '@deepseek-ai/dsh-client-ui-plugin-manager/client'
+import type {} from '@deepseek-ai/dsh-client-ui-plugin-manager/client'
 import type {} from '@deepseek-ai/dsh-client-ui-renderer/client'
 import type { ConfigForm } from '@deepseek-ai/dsh-client-ui-settings/client'
 import type { InjectFace, PropsLocale } from '@deepseek-ai/dsh-client-ui-slots'
@@ -11,7 +11,6 @@ import type { OpeningMode, SidebarSettings } from '../lib/opening-mode.js'
 import { LABELS, type LabelKey } from './labels.js'
 
 const CONFIG_SLOT = 'plugins.bundle.config'
-const DETAIL_SECTION_SLOT = 'plugins.detail.section'
 const LAYOUT_SLOT = 'shell.overlay'
 
 interface ModeSettingsInjected {
@@ -53,15 +52,6 @@ const SETTINGS_CSS = `
     color: var(--dsw-alias-label-secondary);
   }
   .dsh-aggressive-sidebar-status[role='alert'] { color: var(--dsw-alias-state-error-primary); }
-  /* @deepseek-ai/dsh-client-ui-plugin-manager 0.2.2-rc.5, src/client/PluginManagerPage.tsx & PluginManagerPage.module.css:
-     .detailSections flex column and [data-slot="plugins.detail.section"] display:contents. */
-  [data-plugin-detail] > div:has(> [data-slot="plugins.detail.section"] > .dsh-aggressive-sidebar-settings) > [data-detail-document] {
-    order: -2;
-  }
-  [data-plugin-detail] > div:has(> [data-slot="plugins.detail.section"] > .dsh-aggressive-sidebar-settings) > [data-plugin-config],
-  [data-plugin-detail] [data-slot="plugins.detail.section"] > .dsh-aggressive-sidebar-settings {
-    order: -1;
-  }
 `
 
 const MODE_LABEL = { fullscreen: 'fullscreen', 'left-sidebar': 'leftSidebar' } as const
@@ -110,13 +100,6 @@ function ModeSetting({ useSidebarSettings, saveMode, t }: ModeSettingProps) {
       {feedback}
     </p>}
   </div>
-}
-
-function AggregatedModeSetting({ subject, ...settings }: PluginDetailProps & ModeSettingProps) {
-  if (subject.kind !== 'bundle' || subject.pkg.name === PACKAGE_NAME || !subject.pkg.enabled) return null
-  const ownsSidebar = subject.pkg.rows.some(row =>
-    row.rowId === ENTRY_ID && row.moduleName === PACKAGE_NAME && row.enabled)
-  return ownsSidebar ? <ModeSetting {...settings} /> : null
 }
 
 // AppFrame.tsx and AppFrame.module.css (dsh-client-ui-layout 0.2.2-rc.5).
@@ -177,9 +160,6 @@ export function registerModeSettings(ctx: Context): void {
   ctx.slots.inject(CONFIG_SLOT, () => ctx.slots.register({
     name: CONFIG_SLOT, key: PACKAGE_NAME, locale: ENTRY_ID, inject: () => settings,
   }, ModeSetting))
-  ctx.slots.inject(DETAIL_SECTION_SLOT, () => ctx.slots.register({
-    name: DETAIL_SECTION_SLOT, id: ENTRY_ID, locale: ENTRY_ID, inject: () => settings,
-  }, AggregatedModeSetting))
   ctx.slots.inject(LAYOUT_SLOT, () => ctx.slots.register({
     name: LAYOUT_SLOT, id: ENTRY_ID, inject: () => ({ hooks }),
   }, SidebarWidth))

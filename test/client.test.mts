@@ -78,7 +78,7 @@ function harness({ adopted = new Map() } = {}) {
   return { ctx, adopted, disposeAll() { for (const dispose of disposers.reverse()) dispose() } }
 }
 
-test('shows one mode form on the detail page that owns the enabled sidebar row', async () => {
+test('registers mode form only on plugins.bundle.config without detail-section hacks', async () => {
   const { ctx, disposeAll } = harness()
   const slots = new Map()
   const writes = []
@@ -96,20 +96,10 @@ test('shows one mode form on the detail page that owns the enabled sidebar row',
 
   plugin.apply(ctx)
   const standalone = slots.get('plugins.bundle.config')
-  const aggregate = slots.get('plugins.detail.section')
-  const row = { rowId: 'dsh-aggressive-sidebar', moduleName: registration.id, enabled: true }
-  const pkg = { name: '@local/ui-bundle', enabled: true, rows: [row] }
-  const settings = aggregate.options.inject()
-  const renderBundle = pkg => aggregate.render({ subject: { kind: 'bundle', pkg }, saveMode: settings.saveMode })
+  assert.ok(standalone)
+  assert.equal(slots.get('plugins.detail.section'), undefined)
+  const settings = standalone.options.inject()
   assert.equal(standalone.options.key, registration.id)
-  assert.equal(standalone.options.inject(), settings)
-  assert.equal(renderBundle(pkg).type, standalone.render)
-  assert.equal(renderBundle({ ...pkg, name: registration.id }), null, 'the standalone form already has its own slot')
-  assert.equal(renderBundle({ ...pkg, enabled: false }), null)
-  assert.equal(renderBundle({ ...pkg, rows: [{ ...row, enabled: false }] }), null)
-  assert.equal(renderBundle({ ...pkg, rows: [{ ...row, moduleName: '@local/other-sidebar' }] }), null)
-  assert.equal(renderBundle({ ...pkg, rows: [{ ...row, rowId: 'different-row' }] }), null)
-  assert.equal(aggregate.render({ subject: { kind: 'row', pkg, row } }), null)
   assert.equal(await settings.saveMode('fullscreen'), true)
   assert.deepEqual(writes, [['mode', 'fullscreen']])
   disposeAll()
@@ -131,18 +121,15 @@ test('shows one mode form on the detail page that owns the enabled sidebar row',
     },
   }
   stubPlugin.apply(stubHarness.ctx)
-  const stubAggregate = stubSlots.get('plugins.detail.section')
-  const stubElement = stubAggregate.render({
-    subject: { kind: 'bundle', pkg },
-    saveMode: stubAggregate.options.inject().saveMode,
+  const stubStandalone = stubSlots.get('plugins.bundle.config')
+  const modeElement = stubStandalone.render({
+    saveMode: stubStandalone.options.inject().saveMode,
     useSidebarSettings: sel => sel({ status: 'ready', value: { mode: 'left-sidebar' }, writable: true }),
     t: String,
   })
-  const modeElement = stubElement.type(stubElement.props)
   assert.equal(modeElement.props.className, 'dsh-aggressive-sidebar-settings')
   const styleText = modeElement.props.children.find(child => child?.type === 'style')?.props?.children ?? ''
-  assert.match(styleText, /\[data-detail-document\][^}]*order:\s*-2/)
-  assert.match(styleText, /\[data-slot="plugins\.detail\.section"\]\s*>\s*\.dsh-aggressive-sidebar-settings[^}]*order:\s*-1/)
+  assert.doesNotMatch(styleText, /plugins\.detail\.section/)
   stubHarness.disposeAll()
 })
 
