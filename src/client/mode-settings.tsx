@@ -34,7 +34,7 @@ const SETTINGS_CSS = `
 .dsh-aggressive-sidebar-settings {
   display: flex;
   flex-direction: column;
-  gap: 12px;
+  gap: 8px;
   min-width: 0;
   container-type: inline-size;
   color: var(--dsw-alias-label-primary);
@@ -54,40 +54,40 @@ const SETTINGS_CSS = `
   font-weight: 500;
   color: var(--dsw-alias-label-primary);
 }
-.dsh-as-card {
+.dsh-as-list {
   display: flex;
   flex-direction: column;
   min-width: 0;
-  border: 0.5px solid var(--dsw-alias-border-l2);
-  border-radius: var(--dsw-radius-lg, 16px);
-  background: var(--dsw-alias-card-fill);
-  overflow: hidden;
 }
 .dsh-as-row {
   display: flex;
   align-items: center;
-  gap: 12px;
+  gap: 10px 12px;
   min-width: 0;
-  padding: 14px 16px;
+  padding: 12px 0;
+}
+.dsh-as-row:first-child {
+  padding-top: 4px;
+}
+.dsh-as-row:last-child {
+  padding-bottom: 4px;
 }
 .dsh-as-icon {
   display: inline-flex;
   flex: none;
   align-items: center;
   justify-content: center;
-  width: 32px;
-  height: 32px;
-  box-sizing: border-box;
-  border: 0.5px solid var(--dsw-alias-border-l2);
-  border-radius: var(--dsw-radius-sm, 8px);
-  background: var(--dsw-alias-bg-layer-2);
+  width: 20px;
+  height: 20px;
+  align-self: flex-start;
+  margin-top: 2px;
   color: var(--dsw-alias-label-secondary);
 }
 .dsh-as-copy {
   display: flex;
   flex: 1;
   flex-direction: column;
-  gap: 2px;
+  gap: 3px;
   min-width: 0;
 }
 .dsh-as-title-line {
@@ -115,14 +115,14 @@ const SETTINGS_CSS = `
   flex: none;
   align-items: center;
   max-width: 100%;
+  margin-inline-start: 4px;
 }
 .dsh-as-segmented {
   max-width: 100%;
 }
 .dsh-as-status {
-  margin: 0;
-  padding: 10px 16px;
-  border-top: 0.5px solid var(--dsw-alias-border-l2);
+  margin: 4px 0 0;
+  padding: 0;
   font-size: 12px;
   line-height: 18px;
   color: var(--dsw-alias-label-secondary);
@@ -137,12 +137,13 @@ const SETTINGS_CSS = `
     align-items: flex-start;
   }
   .dsh-as-copy {
-    flex: 1 1 calc(100% - 44px);
+    flex: 1 1 calc(100% - 32px);
   }
   .dsh-as-control {
     width: 100%;
     box-sizing: border-box;
-    padding-inline-start: 44px;
+    margin-inline-start: 0;
+    padding-inline-start: 32px;
   }
 }
 `
@@ -188,7 +189,7 @@ function ModeSetting({ useSidebarSettings, saveMode, t, view }: ModeSettingProps
       <div className="dsh-as-head">
         <h4 className="dsh-as-heading">{t('sectionTitle')}</h4>
       </div>
-      <div className="dsh-as-card">
+      <div className="dsh-as-list">
         <div className="dsh-as-row" aria-busy={busy || undefined}>
           <span className="dsh-as-icon" aria-hidden="true">
             {activeMode === 'left-sidebar'
