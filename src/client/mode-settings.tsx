@@ -11,7 +11,8 @@ import type {} from '@deepseek-ai/dsh-client-ui-plugin-manager/client'
 import type {} from '@deepseek-ai/dsh-client-ui-renderer/client'
 import type { ConfigForm } from '@deepseek-ai/dsh-client-ui-settings/client'
 import type { InjectFace, PropsLocale } from '@deepseek-ai/dsh-client-ui-slots'
-import { useId, useState } from 'react'
+import { KnobRow, KnobsPanel, knobsFeedbackKey, knobsFeedbackTone, useKnobSave } from '@miorin/dsh-plugin-knobs-ui'
+import { useId } from 'react'
 import { DEFAULT_MODE, ENTRY_ID, isOpeningMode, PACKAGE_NAME } from '../lib/opening-mode.js'
 import type { OpeningMode, SidebarSettings } from '../lib/opening-mode.js'
 import { LABELS, type LabelKey } from './labels.js'
@@ -30,203 +31,59 @@ declare module '@deepseek-ai/dsh-client-ui-slots' {
   }
 }
 
-const SETTINGS_CSS = `
-.dsh-aggressive-sidebar-settings {
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-  min-width: 0;
-  container-type: inline-size;
-  color: var(--dsw-alias-label-primary);
-}
-[data-dsh-aggregate-member] .dsh-as-head {
-  display: none;
-}
-.dsh-as-head {
-  display: flex;
-  align-items: baseline;
-  gap: 10px;
-}
-.dsh-as-heading {
-  margin: 0;
-  font-size: 14px;
-  line-height: 20px;
-  font-weight: 500;
-  color: var(--dsw-alias-label-primary);
-}
-.dsh-as-list {
-  display: flex;
-  flex-direction: column;
-  min-width: 0;
-}
-.dsh-as-row {
-  display: flex;
-  align-items: center;
-  gap: 10px 12px;
-  min-width: 0;
-  padding: 12px 0;
-}
-.dsh-as-row:first-child {
-  padding-top: 4px;
-}
-.dsh-as-row:last-child {
-  padding-bottom: 4px;
-}
-.dsh-as-icon {
-  display: inline-flex;
-  flex: none;
-  align-items: center;
-  justify-content: center;
-  width: 20px;
-  height: 20px;
-  align-self: flex-start;
-  margin-top: 2px;
-  color: var(--dsw-alias-label-secondary);
-}
-.dsh-as-copy {
-  display: flex;
-  flex: 1;
-  flex-direction: column;
-  gap: 3px;
-  min-width: 0;
-}
-.dsh-as-title-line {
-  display: inline-flex;
-  align-items: center;
-  flex-wrap: wrap;
-  gap: 8px;
-  min-width: 0;
-}
-.dsh-as-title {
-  font-size: 13.5px;
-  line-height: 20px;
-  font-weight: 500;
-  color: var(--dsw-alias-label-primary);
-}
-.dsh-as-desc {
-  margin: 0;
-  font-size: 12px;
-  line-height: 18px;
-  color: var(--dsw-alias-label-tertiary);
-  overflow-wrap: anywhere;
-}
-.dsh-as-control {
-  display: inline-flex;
-  flex: none;
-  align-items: center;
-  max-width: 100%;
-  margin-inline-start: 4px;
-}
-.dsh-as-segmented {
-  max-width: 100%;
-}
-.dsh-as-status {
-  margin: 4px 0 0;
-  padding: 0;
-  font-size: 12px;
-  line-height: 18px;
-  color: var(--dsw-alias-label-secondary);
-  overflow-wrap: anywhere;
-}
-.dsh-as-status[role='alert'] {
-  color: var(--dsw-alias-state-error-primary);
-}
-@container (max-width: 520px) {
-  .dsh-as-row {
-    flex-wrap: wrap;
-    align-items: flex-start;
-  }
-  .dsh-as-copy {
-    flex: 1 1 calc(100% - 32px);
-  }
-  .dsh-as-control {
-    width: 100%;
-    box-sizing: border-box;
-    margin-inline-start: 0;
-    padding-inline-start: 32px;
-  }
-}
-`
-
 type ModeSettingProps = InjectFace<ModeSettingsInjected> & PropsLocale<typeof ENTRY_ID> & {
   readonly view?: 'summary' | 'page'
 }
 
 function ModeSetting({ useSidebarSettings, saveMode, t, view }: ModeSettingProps) {
   const { status, value, writable } = useSidebarSettings(state => state)
-  const [pending, setPending] = useState<OpeningMode>()
-  const [failed, setFailed] = useState(false)
+  const save = useKnobSave(saveMode)
   const id = useId()
   if (view === 'summary') return null
 
   const mode = value?.mode ?? DEFAULT_MODE
-  const activeMode = pending ?? mode
+  const activeMode = save.pending ?? mode
   const canChoose = status === 'ready' && writable
-  const busy = pending !== undefined || status === 'loading'
-  const feedback = pending !== undefined ? t('saving')
-    : failed ? t('saveFailed')
-    : status === 'loading' ? t('loading')
-    : status === 'unavailable' ? t('unavailable')
-    : !writable ? t('readOnly')
-    : undefined
+  const busy = save.pending !== undefined || status === 'loading'
+  const feedback = knobsFeedbackKey({ status, writable, saving: save.pending !== undefined, failed: save.failed })
 
-  async function choose(next: string): Promise<void> {
-    if (!canChoose || pending !== undefined || !isOpeningMode(next) || next === mode) return
-    setPending(next)
-    setFailed(false)
-    try {
-      setFailed(!await saveMode(next))
-    } catch {
-      setFailed(true)
-    } finally {
-      setPending(undefined)
-    }
+  function choose(next: string): void {
+    if (!canChoose || !isOpeningMode(next) || next === mode) return
+    void save.commit(next)
   }
 
   return (
-    <div className="dsh-aggressive-sidebar-settings" data-dsh-aggressive-sidebar-settings="">
-      <style>{SETTINGS_CSS}</style>
-      <div className="dsh-as-head">
-        <h4 className="dsh-as-heading">{t('sectionTitle')}</h4>
-      </div>
-      <div className="dsh-as-list">
-        <div className="dsh-as-row" aria-busy={busy || undefined}>
-          <span className="dsh-as-icon" aria-hidden="true">
-            {activeMode === 'left-sidebar'
-              ? <IconPanelLeftOutlineMedium size={16} />
-              : <IconFullscreenOutlineMedium size={16} />}
-          </span>
-          <div className="dsh-as-copy">
-            <div className="dsh-as-title-line">
-              <span className="dsh-as-title">{t('mode')}</span>
-              {busy && <StateDot state="ongoing" size={12} />}
-            </div>
-            <p className="dsh-as-desc">
-              {t(activeMode === 'left-sidebar' ? 'leftSidebarHint' : 'fullscreenHint')}
-            </p>
-          </div>
-          <div className="dsh-as-control" aria-describedby={feedback === undefined ? undefined : `${id}-status`}>
-            <SegmentedControl
-              id={id}
-              value={activeMode}
-              label={t('mode')}
-              disabled={!canChoose}
-              className="dsh-as-segmented"
-              options={[
-                { value: 'left-sidebar', label: t('leftSidebar'), title: t('leftSidebarHint') },
-                { value: 'fullscreen', label: t('fullscreen'), title: t('fullscreenHint') },
-              ]}
-              onChange={next => { void choose(next) }}
-            />
-          </div>
-        </div>
-        {feedback !== undefined && (
-          <p id={`${id}-status`} className="dsh-as-status" role={failed ? 'alert' : 'status'}>
-            {feedback}
-          </p>
-        )}
-      </div>
-    </div>
+    <KnobsPanel
+      scope={PACKAGE_NAME}
+      heading={t('sectionTitle')}
+      className="dsh-aggressive-sidebar-settings"
+      data-dsh-aggressive-sidebar-settings=""
+    >
+      <KnobRow
+        aria-busy={busy || undefined}
+        wrap="wide"
+        icon={activeMode === 'left-sidebar'
+          ? <IconPanelLeftOutlineMedium size={16} />
+          : <IconFullscreenOutlineMedium size={16} />}
+        title={t('mode')}
+        indicator={busy && <StateDot state="ongoing" size={12} />}
+        description={t(activeMode === 'left-sidebar' ? 'leftSidebarHint' : 'fullscreenHint')}
+        feedback={feedback === undefined ? undefined : { id: `${id}-status`, text: t(feedback), tone: knobsFeedbackTone(feedback) }}
+        control={
+          <SegmentedControl
+            id={id}
+            value={activeMode}
+            label={t('mode')}
+            disabled={!canChoose}
+            options={[
+              { value: 'left-sidebar', label: t('leftSidebar'), title: t('leftSidebarHint') },
+              { value: 'fullscreen', label: t('fullscreen'), title: t('fullscreenHint') },
+            ]}
+            onChange={choose}
+          />
+        }
+      />
+    </KnobsPanel>
   )
 }
 

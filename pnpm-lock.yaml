@@ -47,6 +47,9 @@ importers:
       '@deepseek-ai/schemastery':
         specifier: 3.19.0
         version: 3.19.0
+      '@miorin/dsh-plugin-knobs-ui':
+        specifier: link:../../packages/dsh-plugin-knobs-ui
+        version: link:../../packages/dsh-plugin-knobs-ui
       '@types/node':
         specifier: ^22.20.5
         version: 22.20.5

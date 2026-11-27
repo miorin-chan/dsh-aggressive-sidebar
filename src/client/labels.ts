@@ -1,4 +1,6 @@
-export const LOCALES = ['en', 'zh', 'ja', 'de', 'es', 'fr', 'pt', 'ru'] as const
+import { KNOBS_LOCALES, withKnobsLabels } from '@miorin/dsh-plugin-knobs-ui'
+
+export const LOCALES = KNOBS_LOCALES
 
 const en = {
   sectionTitle: 'Sidebar layout',
@@ -7,14 +9,9 @@ const en = {
   leftSidebar: 'Left sidebar',
   leftSidebarHint: 'Expands the right panel up to the left sidebar edge.',
   fullscreenHint: 'Expands the right panel across the entire window.',
-  loading: 'Loading settings…',
-  saving: 'Saving…',
-  unavailable: 'Settings are unavailable.',
-  readOnly: 'This setting is read-only.',
-  saveFailed: 'Couldn’t save the setting.',
 }
 
-export const LABELS = {
+export const LABELS = withKnobsLabels({
   en,
   zh: {
     sectionTitle: '侧栏展开',
@@ -23,11 +20,6 @@ export const LABELS = {
     leftSidebar: '到左边栏',
     leftSidebarHint: '右侧面板展开至左侧边栏边缘，保留左边栏可见。',
     fullscreenHint: '右侧面板铺满整个窗口区域。',
-    loading: '正在加载设置…',
-    saving: '正在保存…',
-    unavailable: '设置不可用。',
-    readOnly: '此设置为只读。',
-    saveFailed: '未能保存设置。',
   },
   ja: {
     sectionTitle: 'サイドバー展開',
@@ -36,11 +28,6 @@ export const LABELS = {
     leftSidebar: '左サイドバー',
     leftSidebarHint: '右パネルを左サイドバーの端まで広げ、左サイドバーを残します。',
     fullscreenHint: '右パネルをウィンドウ全体に広げます。',
-    loading: '設定を読み込み中…',
-    saving: '保存中…',
-    unavailable: '設定を利用できません。',
-    readOnly: 'この設定は読み取り専用です。',
-    saveFailed: '設定を保存できませんでした。',
   },
   de: {
     sectionTitle: 'Seitenleisten-Layout',
@@ -49,11 +36,6 @@ export const LABELS = {
     leftSidebar: 'Linke Leiste',
     leftSidebarHint: 'Erweitert das rechte Panel bis zur linken Seitenleiste.',
     fullscreenHint: 'Erweitert das rechte Panel über das gesamte Fenster.',
-    loading: 'Einstellungen werden geladen …',
-    saving: 'Wird gespeichert …',
-    unavailable: 'Einstellungen sind nicht verfügbar.',
-    readOnly: 'Diese Einstellung ist schreibgeschützt.',
-    saveFailed: 'Die Einstellung konnte nicht gespeichert werden.',
   },
   es: {
     sectionTitle: 'Diseño lateral',
@@ -62,11 +44,6 @@ export const LABELS = {
     leftSidebar: 'Barra lateral',
     leftSidebarHint: 'Amplía el panel derecho hasta el borde de la barra lateral izquierda.',
     fullscreenHint: 'Amplía el panel derecho a toda la ventana.',
-    loading: 'Cargando ajustes…',
-    saving: 'Guardando…',
-    unavailable: 'Los ajustes no están disponibles.',
-    readOnly: 'Este ajuste es de solo lectura.',
-    saveFailed: 'No se pudo guardar el ajuste.',
   },
   fr: {
     sectionTitle: 'Disposition latérale',
@@ -75,11 +52,6 @@ export const LABELS = {
     leftSidebar: 'Barre latérale',
     leftSidebarHint: 'Étend le panneau droit jusqu’au bord de la barre latérale gauche.',
     fullscreenHint: 'Étend le panneau droit sur toute la fenêtre.',
-    loading: 'Chargement des paramètres…',
-    saving: 'Enregistrement…',
-    unavailable: 'Les paramètres sont indisponibles.',
-    readOnly: 'Ce paramètre est en lecture seule.',
-    saveFailed: 'Impossible d’enregistrer le paramètre.',
   },
   pt: {
     sectionTitle: 'Layout lateral',
@@ -88,11 +60,6 @@ export const LABELS = {
     leftSidebar: 'Barra lateral',
     leftSidebarHint: 'Expande o painel direito até a borda da barra lateral esquerda.',
     fullscreenHint: 'Expande o painel direito por toda a janela.',
-    loading: 'Carregando configurações…',
-    saving: 'Salvando…',
-    unavailable: 'As configurações estão indisponíveis.',
-    readOnly: 'Esta configuração é somente leitura.',
-    saveFailed: 'Não foi possível salvar a configuração.',
   },
   ru: {
     sectionTitle: 'Режим панели',
@@ -101,12 +68,7 @@ export const LABELS = {
     leftSidebar: 'До левой панели',
     leftSidebarHint: 'Разворачивает правую панель до края левой боковой панели.',
     fullscreenHint: 'Разворачивает правую панель на всё окно.',
-    loading: 'Загрузка настроек…',
-    saving: 'Сохранение…',
-    unavailable: 'Настройки недоступны.',
-    readOnly: 'Эта настройка доступна только для чтения.',
-    saveFailed: 'Не удалось сохранить настройку.',
   },
-} satisfies Record<(typeof LOCALES)[number], Record<keyof typeof en, string>>
+} satisfies Record<(typeof LOCALES)[number], Record<keyof typeof en, string>>)
 
 export type LabelKey = keyof typeof LABELS.en

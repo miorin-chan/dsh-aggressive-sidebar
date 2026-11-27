@@ -146,7 +146,9 @@ test('registers mode form only on plugins.bundle.config without detail-section h
     t: String,
   })
   assert.equal(modeElement.props.className, 'dsh-aggressive-sidebar-settings')
-  const styleText = modeElement.props.children.find(child => child?.type === 'style')?.props?.children ?? ''
+  assert.equal(modeElement.props.scope, registration.id)
+  const panel = modeElement.type(modeElement.props)
+  const styleText = panel.props.children.find(child => child?.type === 'style')?.props?.children ?? ''
   assert.doesNotMatch(styleText, /plugins\.detail\.section/)
   assert.match(styleText, /@container \(max-width: 520px\)/)
   assert.match(styleText, /\[data-dsh-aggregate-member\]/)
