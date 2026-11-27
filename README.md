@@ -80,3 +80,12 @@ focusing a content root on a plain open, focusing a scroll viewer and restoring 
 preferring an editor or embedded frame, falling back to the pane, keeping page-owned focus,
 cancelling on pointer/key/close, ignoring a background session, routing the header button through the native toggle,
 and restoring everything on unload.
+
+## Screenshots
+
+The Chinese-language UI shows a demo Markdown preview extending to the left sidebar.
+The file path belongs to a temporary demo workspace.
+
+![Markdown preview filling the conversation area while the left sidebar remains visible](docs/assets/screenshots/main-light.png)
+
+[Dark theme](docs/assets/screenshots/main-dark.png)
